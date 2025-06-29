@@ -3,7 +3,7 @@ const mongoose=require("mongoose");
 const { authMiddleware } = require("../middleware");
 const zod=require("zod");
 const router=express.Router();
-const {User}= require("../db")
+const {User, StoreItem}= require("../db")
 
 const updateUserSchema = zod.object({
   username: zod.string().min(3).max(20).optional(),
@@ -13,7 +13,7 @@ const updateUserSchema = zod.object({
 
 const spendSchema = zod.object({
   itemName: zod.string().min(1, "Item name is required"),
-  cost: zod.number().min(0, "Cost must be non-negative"),
+ 
 });
 
 
@@ -100,21 +100,38 @@ const parsed = spendSchema.safeParse(req.body);
       errors: parsed.error.errors
     });
   }
-    const {itemName,cost}=parsed.data;
+    const {itemName}=parsed.data;
 
+
+    
     const session = await mongoose.startSession();
 
 try {
   session.startTransaction();
 
-  const user = await User.findById(req.user.id).session(session);
 
-  if (user.xp < cost) {
+  const user = await User.findById(req.user.id).session(session);
+  const storeItem = await StoreItem.findOne({ name: itemName }).session(session);
+
+  if(!storeItem){
+    await session.abortTransaction();
+    return res.status(400).json({
+      msg:"No such item found in store"
+    })
+  }
+
+  if (user.inventory.includes(itemName)) {
+  await session.abortTransaction();
+  return res.status(400).json({ msg: "Item already owned" });
+}
+
+
+  if (user.xp < storeItem.cost) {
     await session.abortTransaction();
     return res.status(400).json({ msg: "Not enough XP" });
   }
 
-  user.xp -= cost;
+  user.xp -= storeItem.cost;
   user.inventory.push(itemName);
   await user.save({ session });
 

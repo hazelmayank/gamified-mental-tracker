@@ -50,7 +50,7 @@ try{
          return res.status(201).json({ msg: "Entry created", xpEarned });
     }
     else{
-          entry.mood = mood;
+    entry.mood = mood;
       entry.journalText = journalText;
       entry.habits = habits;
       await entry.save();

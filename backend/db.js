@@ -38,7 +38,8 @@ const userSchema=new mongoose.Schema({
     friends:[
         {type:mongoose.Schema.Types.ObjectId,
             ref:'User'
-        }]
+        }],
+        achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }]
     
 });
 
@@ -69,7 +70,7 @@ const entrySchema=new mongoose.Schema({
 
   
 });
-  entrySchema.index({user:1,date:1},{unique:true})
+  entrySchema.index({user:1,date:1},{unique:true}) 
 
 const challengeRoomschema=new mongoose.Schema({
     name:{
@@ -95,8 +96,24 @@ const itemsBought=new mongoose.Schema({
 })
 
 const badgeModel=new mongoose.Schema({
-    name:{type:String},
-    criteria:{type:String},
+    name:{type:String,},
+  criteria: {
+    type: {
+      type: String,
+      enum: ["xp", "level", "entries"],
+      required: true
+    },
+    condition: {
+      type: String, 
+      enum: ["gte", "eq", "lt"], 
+      required: true
+    },
+    value: {
+      type: Number,
+      required: true
+    }
+  },
+
     description:{type:String,require:true},
     icon:{type:String,default:"default.png"}
 })
@@ -110,9 +127,9 @@ const friendRequestSchema=new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 const Entry = mongoose.model("Entry", entrySchema);
-const ChallengeRoom = mongoose.model("ChallengeRoom", challengeRoomSchema);
-const StoreItem = mongoose.model("StoreItem", storeItemSchema);
-const Achievement = mongoose.model("Achievement", badgeSchema);
+const ChallengeRoom = mongoose.model("ChallengeRoom", challengeRoomschema);
+const StoreItem = mongoose.model("StoreItem", itemsBought);
+const Achievement = mongoose.model("Achievement", badgeModel);
 const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
 
 module.exports = {

@@ -8,3 +8,6 @@ router.use('/user',userRouter);
 router.use('/auth',authRouter);
 router.use('/entries',entryRouter);
 
+
+module.exports=router;
+
