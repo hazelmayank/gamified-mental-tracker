@@ -1,0 +1,63 @@
+.my-challenges-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.my-challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.my-challenge-card {
+  background-color: #f3f6fd;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.my-challenge-card:hover {
+  transform: scale(1.02);
+}
+
+.my-challenge-card h3 {
+  color: #2563eb;
+  margin-bottom: 0.3rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.public {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.private {
+  background-color: #fde68a;
+  color: #b45309;
+}
+
+.my-challenge-card button {
+  margin-top: 1rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.my-challenge-card button:hover {
+  background-color: #1d4ed8;
+}

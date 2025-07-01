@@ -1,0 +1,118 @@
+.challenge-room {
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: #f4f7fc;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.challenge-room h2 {
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+.challenge-room p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.8rem;
+}
+
+.challenge-room form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.challenge-room textarea {
+  resize: none;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  font-size: 1rem;
+  min-height: 120px;
+  font-family: "Segoe UI", sans-serif;
+  transition: border-color 0.2s ease;
+}
+
+.challenge-room textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.challenge-room button[type="submit"] {
+  align-self: flex-start;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.challenge-room button[type="submit"]:hover {
+  background-color: #1d4ed8;
+}
+.submissions-section {
+  margin-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1.5rem;
+}
+
+.submissions-section h3 {
+  color: #111827;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.submissions-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.submissions-section li {
+  background-color: #ffffff;
+  border: 1px solid #e0e7ff;
+  border-left: 4px solid #2563eb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.submissions-section p {
+  margin: 0.25rem 0;
+}
+
+.submitted-at {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.xp-popup {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #22c55e;
+  animation: pop 1s ease;
+  text-align: center;
+}
+
+@keyframes pop {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}

@@ -163,3 +163,13 @@ res.json({ msg: "Entry deleted" });
 })
 
 module.exports=router;
+
+//http://localhost:3000/api/v1/auth/signup
+
+
+/*
+ "username":"mayank",
+ "email":"mayankjeefinal@gmail.com",
+ "password":"123456"
+ 
+ */

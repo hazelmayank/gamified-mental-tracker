@@ -26,6 +26,8 @@ const signupSchema = zod.object({
 });
 
 router.post("/signup", async function (req, res) {
+
+  
   const result = signupSchema.safeParse(req.body);
 
   if (!result.success) {
@@ -109,7 +111,7 @@ router.post('/signin',async function(req,res){
 
         const isPassword=await bcrypt.compare(password,user.password);
         if(!isPassword){
-            return res.status().json({
+            return res.status(401).json({
                 msg:"Incorrect password"
             })
         }
@@ -117,7 +119,8 @@ router.post('/signin',async function(req,res){
         const token=jwt.sign({id:user._id,username:username},JWT_SECRET,{expiresIn:"1h"});
 
         return res.status(200).json({
-            msg:"Sign-in successfull !"
+            msg:"Sign-in successfull !",
+            token:token
         })
 
     }

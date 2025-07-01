@@ -1,5 +1,5 @@
 const mongoose=require("mongoose");
-mongoose.connect("");
+mongoose.connect("mongodb+srv://mayankjeefinal:Mayank%406696@mayankfirstdb.vva4taq.mongodb.net/gamified-mental-tracker");
 
 const userSchema=new mongoose.Schema({
 
@@ -78,7 +78,9 @@ const challengeRoomschema=new mongoose.Schema({
         required:true
     },
     isPrivate:{type:Boolean, default:false,required:true},
-    creator:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
+    creator:{type:mongoose.Schema.Types.ObjectId,ref:"User",
+        
+        required:true},
     participants:[{type:mongoose.Schema.Types.ObjectId,ref:"User"}],
     submissions: [{
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

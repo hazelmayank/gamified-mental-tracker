@@ -2,6 +2,8 @@ const express=require("express");
 const router=express.Router();
 const zod=require("zod");
 
+const { User } = require("../db");
+
 const {ChallengeRoom}=require('../db');
 const { authMiddleware } = require("../middleware");
 
@@ -30,6 +32,7 @@ router.post('/',authMiddleware,async (req,res)=>{
             name,
             isPrivate,
             creator:req.user.id,
+           
             participants:[req.user.id]
 
         })
@@ -92,7 +95,10 @@ const challenge=await ChallengeRoom.findById(req.params.id);
     });
 
      await challenge.save();
+    const user = await User.findById(req.user.id);
+    user.xp += 10;
 
+     await user.save();
       res.json({ msg: "Submission successful" });
 
 
@@ -134,7 +140,7 @@ return res.status(500).json({
 
 router.get("/all", async (req, res) => {
   try {
-    const challenges = await ChallengeRoom.find({ isPrivate: false }).sort({ createdAt: -1 });
+    const challenges = await ChallengeRoom.find({ isPrivate: false }).populate("creator","username").sort({ createdAt: -1 });
 
     res.json({ challenges });
   } catch (err) {
