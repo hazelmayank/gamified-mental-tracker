@@ -1,17 +1,21 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import './Navbar.css'
-const Navbar = () => {
-  return (
-    <nav className='navbar'>
-        <h1 className='logo'>MindTrack</h1>
-        <div className='nav-links'>
-            <Link to={"/dashboard"} >Dashboard</Link>
-            <Link to={"/register"} >Register</Link>
-            <Link to={"/"} >Login</Link>
-        </div> 
-    </nav>
-  )
-}
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-export default Navbar
+export default function Navbar() {
+  return (
+    <nav className="navbar">
+      <div className="navbar__logo">
+        <Link to="/" className="logo-link">MindTrack</Link>
+      </div>
+      <ul className="navbar__links">
+        <li><Link to="/dashboard">Dashboard</Link></li>
+        <li><Link to="/achievements">Achievements</Link></li>
+        <li><Link to="/store">Store</Link></li>
+        <li><Link to="/friends">Friends</Link></li>
+        <li><Link to="/">Login</Link></li>
+        <li><Link to="/register">Register</Link></li>
+      </ul>
+    </nav>
+  );
+}

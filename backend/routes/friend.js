@@ -8,11 +8,13 @@ router.get('/', authMiddleware, async (req, res) => {
   const user = await User.findById(req.user.id).populate("friends", "username avatar");
   res.json({ friends: user.friends });
 });
-
+ 
 
 
 router.get('/search',authMiddleware,async (req,res)=>{
+   
     const query=req.query.query || "";
+     
 
     try{
 
@@ -36,37 +38,47 @@ return res.status(500).json({
 
 })
 
-router.post('/request',authMiddleware,async (req,res) =>{
+router.post('/request', authMiddleware, async (req, res) => {
+  const toUserId = req.body.toUser;
 
-    const toUserid=req.body
-    if(toUserid===req.user.id){
-         return res.status(400).json({
-            msg:"You can't add yourself!"
-         })
-    }
 
-    const existing=await FriendRequest.find({
-        fromUSer:req.uer.id,
-        toUser:toUserid,
-       status:"pending"
+  if (toUserId === req.user.id) {
+    return res.status(400).json({
+      msg: "You can't add yourself!",
+    });
+  }
+
+  try {
+   
+    const existing = await FriendRequest.find({
+      fromUser: req.user.id,
+      toUser: toUserId,
+      status: "pending",
     });
 
-    if(existing){
-        return res.status(400).json({
-            msg:"You have already sent a request"
-        })
+    if (existing.length > 0) {
+      return res.status(400).json({
+        msg: "You have already sent a request",
+      });
     }
 
+    
     await FriendRequest.create({
-        fromUser:req.user.id,
-        toUser:toUserid
-    })
+      fromUser: req.user.id,
+      toUser: toUserId,
+      status: "pending",
+    });
 
     res.json({
-        msg:"Friend request sent!"
-    })
+      msg: "Friend request sent!",
+    });
 
+  } catch (err) {
+    console.error("Failed to send friend request:", err);
+    res.status(500).json({ msg: "Server error while sending request" });
+  }
 });
+
 
 
 router.get('/requests',authMiddleware,async (req,res)=>{
@@ -81,7 +93,7 @@ router.get('/requests',authMiddleware,async (req,res)=>{
 })
 
 
-router.get('/respond',authMiddleware,async (req,res)=>{
+router.post('/respond',authMiddleware,async (req,res)=>{
   try{
 
     const {requestId , action }=req.body;

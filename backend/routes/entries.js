@@ -52,7 +52,7 @@ try{
     else{
     entry.mood = mood;
       entry.journalText = journalText;
-      entry.habits = habits;
+      entry.habits = habits; 
       await entry.save();
       return res.json({ msg: "Entry updated" });
     }

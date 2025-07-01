@@ -1,0 +1,79 @@
+.friends-page {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f8fbff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.friends-page h2 {
+  text-align: center;
+  color: #3b3f58;
+  margin-bottom: 2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h3 {
+  color: #1f4d7a;
+  margin-bottom: 1rem;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.friend-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.friend-card span {
+  font-size: 1rem;
+  color: #333;
+}
+
+.friend-card button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.friend-card button:hover {
+  background-color: #1e40af;
+}
+.find-friends-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.find-friends-button button {
+  background-color: #10b981;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.find-friends-button button:hover {
+  background-color: #059669;
+}
+

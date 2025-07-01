@@ -1,0 +1,37 @@
+.leaderboard-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f9fbff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.leaderboard-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #1f3f6b;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.leaderboard-table th {
+  background-color: #eef2fb;
+  font-weight: bold;
+  color: #1d3557;
+}
+
+.leaderboard-table tr:nth-child(even) {
+  background-color: #f5f9ff;
+}

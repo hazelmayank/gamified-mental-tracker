@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 import Navbar from './components/Navbar'
 import { Routes,Route } from 'react-router-dom'
@@ -14,7 +12,11 @@ import Allchallenges from './pages/Allchallenges'
 import CreateChallenge from './pages/CreateChallenge'
 import  ChallengeRoom  from './pages/ChallengeRoom'
 import MyChallenges from './pages/MyChallenges'
-
+import Leaderboard from './pages/Leaderboard'
+import Friends from './pages/Friends'
+import SendFriendRequest from './pages/SendFriendRequest'
+import Achievements from './pages/Achievements'
+import Store from './pages/Store'
 function App() {
   
 
@@ -31,6 +33,11 @@ function App() {
         <Route path="/challenges/create" element={<PrivateRoute><CreateChallenge /></PrivateRoute>} />
         <Route path="/challenge/:id" element={<PrivateRoute><ChallengeRoom /></PrivateRoute>} />
         <Route path="/my-challenges" element={<PrivateRoute><MyChallenges /></PrivateRoute>} />
+        <Route path="/find-friends" element={<SendFriendRequest />} />
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/achievements" element={<Achievements />} />
+        <Route path="/store" element={<Store />} />
 
       </Routes>
     </>
