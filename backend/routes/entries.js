@@ -3,6 +3,7 @@ const { authMiddleware } = require("../middleware");
 const router=express.Router();
 const zod=require("zod");
 const { Entry,User } = require("../db");
+// const { checkandUnlock } = require("../achievements");
 
 const entrySchema=zod.object({
     mood:zod.string().min(1,"Mood is required"),
@@ -46,6 +47,9 @@ try{
  await User.findByIdAndUpdate(req.user.id, {
         $inc: { xp: xpEarned }
       });
+
+    //   await checkandUnlock(req.user.id);
+
 
          return res.status(201).json({ msg: "Entry created", xpEarned });
     }

@@ -1,47 +1,68 @@
 .journal-entry-page {
   max-width: 600px;
-  margin: 100px auto;
+  margin: 80px auto;
   padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', sans-serif;
 }
 
 .journal-form label {
   display: block;
-  margin: 1rem 0 0.5rem;
-  font-weight: 500;
+  margin: 1rem 0 0.25rem;
+  font-weight: 600;
   color: #2b4f81;
 }
 
-select, textarea {
+select,
+textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+  border-radius: 8px;
   font-size: 1rem;
-  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
 }
 
 textarea {
   min-height: 120px;
+  resize: vertical;
 }
 
-.habit-options {
+.habits-options {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-bottom: 1rem;
 }
 
-.habit-options label {
+.habits-options label {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #f0f4f8;
   padding: 8px 12px;
   border-radius: 6px;
-  cursor: pointer;
+  background: #e6f2ff;
   font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+button[type="submit"] {
+  width: 100%;
+  background-color: #2b4f81;
+  color: #fff;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #1f3b63;
 }

@@ -1,0 +1,93 @@
+.entries-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.entries-page h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.entries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.entry-card {
+  background: #f5f7ff;
+  border-left: 5px solid #4f46e5;
+  padding: 18px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.entry-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.entry-date {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.entry-mood {
+  font-size: 0.95rem;
+  background: #e0e7ff;
+  color: #3b82f6;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.entry-habits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+
+.habit-chip {
+  background: #e0f7ef;
+  color: #065f46;
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+}
+
+.entry-text {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}

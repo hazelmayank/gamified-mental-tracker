@@ -32,7 +32,7 @@ if(currentPath=='/journal'){
         alert("Your session has expired. You’ll be redirected to login.");
 
         setTimeout(() => {
-        window.location.href = "/";
+        window.location.href = "/login";
       }, 3000); 
 
 

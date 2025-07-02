@@ -1,6 +1,7 @@
 const express=require("express");
 const { Achievement, User } = require("../db");
 const { authMiddleware } = require("../middleware");
+const {Entry} =require('../db')
 const router=express.Router();
 
 router.get('/',async (req,res)=>{
@@ -35,52 +36,46 @@ const user=await User.findById(req.user.id).populate("achievements");
 
 
 
-async function checkandUnlock(userId){
-    const user=await User.findById(userId).populate("achievements");
-    const allAchievements=await Achievement.find({});
-    
+async function checkandUnlock(userId) {
+  const user = await User.findById(userId).populate("achievements");
+  const allAchievements = await Achievement.find({});
+  const unlockedIds = user.achievements.map(a => a._id.toString());
+  const newlyUnlocked = [];
 
-    const unlockedIds=user.achievements.map(a => a._id.toString());
-    const newylyunlocked=[];
+  for (const ach of allAchievements) {
+    if (unlockedIds.includes(ach._id.toString())) continue;
 
-    for(const ach of allAchievements){
-        if(unlockedIds.includes(ach._id.toString())) continue;
+    const { type, condition, value } = ach.criteria;
 
-        const {type , condition, value}=ach.criteria;
+    let userStat;
+    if (type === "xp") userStat = user.xp;
+    else if (type === "level") userStat = user.level;
+    else if (type === "entries") {
+      const allEntries = await Entry.find({ user: userId });
+      userStat = allEntries.length;
+    } else continue;
 
-        let userStat;
-        if(type==="xp"){userStat=user.xp};
-        if(type==="level")userStat=user.level;
-        else if(type==="entries"){
-            const allEntries=await Entry.findById(userId);
-            userStat=allEntries.length;
-        }
+    let qualifies = false;
+    if (condition === "gte") qualifies = userStat >= value;
+    else if (condition === "eq") qualifies = userStat === value;
+    else if (condition === "lt") qualifies = userStat < value;
 
-       
-        let qualifies = false;
-if (condition === "gte") qualifies = userStat >= value;
-else if (condition === "eq") qualifies = userStat === value;
-else if (condition === "lt") qualifies = userStat < value;
-else continue;
-
-
-if(qualifies){
-    user.achievements.push(ach._id);
-    newylyunlocked.push(ach.name)
-}
-
-
-
+    if (qualifies) {
+      user.achievements.push(ach._id);
+      newlyUnlocked.push(ach.name);
     }
+  }
 
-    await user.save();
-    return newylyunlocked;
+  await user.save();
+  return newlyUnlocked;
 }
+
 
 
 router.post('/unlock', authMiddleware, async (req, res) => {
   try {
-    const newlyUnlocked = await checkAndUnlock(req.user.id);
+    const newlyUnlocked = await checkandUnlock(req.user.id);
+
 
     if (newlyUnlocked.length === 0) {
       return res.json({ msg: "No new achievements unlocked" });

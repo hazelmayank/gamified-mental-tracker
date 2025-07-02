@@ -42,13 +42,17 @@ useEffect(
 
           </div>
            <div className="quick-links">
-        <Link to='/journal' className="card">📔 New Journal Entry</Link>
-        <Link to='/my-challenges' className="card">🔥 My Challenge</Link>
-        <Link to='/challenges' className="card">🔥 Join Challenge</Link>
-        <Link to='/leaderboard' className="card">🏆 Leaderboard</Link>
-        <Link to='/store' className="card">🛍️ Store</Link>
-        <Link to='/friends' className="card">🫂 Friends</Link>
-      </div>
+  <Link to='/journal' className="card">📔 New Journal Entry</Link>
+  <Link to='/journal-stats' className="card">📈 Entry Stats</Link>
+  <Link to='/today-entry' className="card">🗓️ Today’s Entry</Link>
+  <Link to='/entries' className="card">🧾 All Entries</Link>
+  <Link to='/my-challenges' className="card">🔥 My Challenge</Link>
+  <Link to='/challenges' className="card">🔥 Join Challenge</Link>
+  <Link to='/leaderboard' className="card">🏆 Leaderboard</Link>
+  <Link to='/store' className="card">🛍️ Store</Link>
+  <Link to='/friends' className="card">🫂 Friends</Link>
+</div>
+
         </div>
       </div>
         </div>

@@ -52,7 +52,7 @@ setLoading(true)
           {error && <p className="error-text">{error}</p>}
          
          <button onClick={handleSubmit} disabled={loading}>{loading ? "Registering..." : "Register"}</button>
-         <p style={{ marginTop: "1rem", fontSize: "0.9rem" }}>Already have an account ? <a href='/'>Login</a></p>
+         <p style={{ marginTop: "1rem", fontSize: "0.9rem" }}>Already have an account ? <a href='/login'>Login</a></p>
         </div>
       
     </div>
