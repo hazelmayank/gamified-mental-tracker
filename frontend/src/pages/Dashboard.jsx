@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react'
 import "./Dashboard.css";
 import axios from '../axios'
 import {Link} from 'react-router-dom'
+function slugify(str) {
+  return str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+
 const Dashboard = () => {
 
 const [user,setUser]=useState(null);
@@ -31,6 +35,14 @@ useEffect(
 
   return (
     <div className='dashboard-container'>
+      
+      {user.equippedPet && (
+  <img
+    src={`/assets/pets/${slugify(user.equippedPet)}.png`}
+    alt={user.equippedPet}
+    className="pet-widget"
+  />
+)}
         <div className="welcome-section">
     <img src={`/${user.avatar || 'default.png'}`} onError={(e) => e.target.style.display = 'none'} className='avatar' alt='avatar' />
 

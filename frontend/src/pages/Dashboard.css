@@ -77,3 +77,16 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   color: #007bff;
 }
+.pet-widget {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 100px;
+  z-index: 99;
+}
+.pet-widget:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+

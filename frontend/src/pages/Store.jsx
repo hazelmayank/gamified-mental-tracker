@@ -38,7 +38,8 @@ export default function Store() {
       <div className="store-grid">
         {items.map((item) => (
           <div key={item.name} className="store-item">
-            <img src={item.image} alt={item.name} />
+            <img src={`/assets/pets/${item.image}`} alt={item.name} />
+
             <h4>{item.name}</h4>
             <p>Type: {item.type}</p>
             <p>Cost: {item.cost} XP</p>

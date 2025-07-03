@@ -23,6 +23,7 @@ import JournalStats from './pages/JournalStats';
 // import Home from './pages/Home'
 import HomeLanding from './pages/HomeLanding'
 import Footer from "./components/Footer";
+import MyPets from './pages/MyPets'
 
 
 
@@ -52,6 +53,7 @@ function App() {
         <Route path="/journal-stats" element={<JournalStats />} />
         {/* <Route path="/home" element={<Home />} /> */}
         <Route path='/login' element={<Login />} />
+    <Route path="/mypets" element={<MyPets />} />
 
       </Routes>
       {/* <Footer /> */}

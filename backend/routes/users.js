@@ -145,6 +145,21 @@ try {
   res.status(500).json({ msg: "Transaction failed" });
 }
 
+});
+
+router.post('/equip-pet',authMiddleware,async (req,res)=>{
+  const {petName}=req.body;
+
+  const user=await User.findById(req.user.id);
+  if(!user.inventory.includes(petName)){
+    return res.status(400).json({
+      msg:"You don't own this pet !"
+    })
+  }
+
+  user.equippedPet=petName;
+  await user.save();
+   res.json({ msg: `${petName} equipped successfully!`, pet: petName });
 })
 
 module.exports=router;

@@ -1,0 +1,15 @@
+.pet-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.pet-card {
+  padding: 12px;
+  border-radius: 12px;
+  background: #f3f3f3;
+  width: 160px;
+  text-align: center;
+}
+.pet-card img {
+  width: 100px;
+}

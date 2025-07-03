@@ -35,6 +35,8 @@ const userSchema=new mongoose.Schema({
         default:"light"
     },
     inventory:[String],
+    equippedPet: { type: String, default: null },
+
     friends:[
         {type:mongoose.Schema.Types.ObjectId,
             ref:'User'
