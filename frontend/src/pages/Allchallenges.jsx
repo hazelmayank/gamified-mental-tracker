@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "../axios";
-import "./AllChallenges.css";
+import "./Allchallenges.css";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export default function AllChallenges() {
