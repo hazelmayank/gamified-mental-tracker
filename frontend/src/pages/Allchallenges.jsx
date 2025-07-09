@@ -1,33 +1,40 @@
 import { useEffect, useState } from "react";
 import axios from "../axios";
 import "./Allchallenges.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../context/ToastContext"; // ✅ Import toast hook
 
 export default function AllChallenges() {
   const [challenges, setChallenges] = useState([]);
+  const navigate = useNavigate();
+  const { showToast } = useToast(); // ✅ Destructure showToast from context
 
   useEffect(() => {
     axios.get("/challenges/all")
       .then((res) => setChallenges(res.data.challenges || []))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        showToast("Failed to load challenges", "error"); // ✅ Show error toast
+      });
   }, []);
 
   const handleJoin = async (id) => {
     try {
       await axios.post(`/challenges/join/${id}`);
-
-      alert("Joined successfully!");
+      showToast("🎉 Joined successfully!", "success"); // ✅ Success toast
     } catch (err) {
-      alert(err.response?.data?.message || "Join failed");
+      showToast(err.response?.data?.msg || "❌ Join failed", "error"); // ✅ Error toast
     }
   };
-const navigate=useNavigate();
+
   return (
     <div className="challenges-container">
       <h2>Public Challenge Rooms</h2>
-       <button onClick={() => navigate("/challenges/create")} className="create-btn">
-    ➕ Create New Challenge
-  </button>
+      <br />
+      <button onClick={() => navigate("/challenges/create")} className="create-btn">
+        ➕ Create New Challenge
+      </button>
+
       <div className="challenge-grid">
         {challenges.map((ch) => (
           <div className="challenge-card" key={ch._id}>

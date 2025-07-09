@@ -31,6 +31,10 @@ useEffect(
 
   if (!user) return <p>Loading dashboard...</p>;
 
+  const levelBaseXp=(level)=>Math.pow((level-1)/0.1,2);
+  const nextLevelXP=levelBaseXp(user.level+1);
+  const currentLevelXP=levelBaseXp(user.level);
+  const xpProgressPercent = ((user.xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
 
 
   return (
@@ -50,9 +54,13 @@ useEffect(
           <h2>Welcome back, {user.username} 👋</h2>
           <p>Level {user.level} • XP: {user.xp}</p>
           <div className="xp-bar">
-            <div className="xp-fill" style={{ width: `${user.xp % 100}%` }}></div>
-
+            <div className="xp-fill" style={{ width: `${xpProgressPercent}%` }}></div>
+           
           </div>
+
+          <p className="xp-text">
+  {Math.floor(user.xp - currentLevelXP)} XP / {Math.floor(nextLevelXP - currentLevelXP)} XP
+</p>
            <div className="quick-links">
   <Link to='/journal' className="card">📔 New Journal Entry</Link>
   <Link to='/journal-stats' className="card">📈 Entry Stats</Link>

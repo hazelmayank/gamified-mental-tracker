@@ -41,7 +41,14 @@ const userSchema=new mongoose.Schema({
         {type:mongoose.Schema.Types.ObjectId,
             ref:'User'
         }],
-        achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }]
+        achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }],
+        challengeProgress:[{
+            challengeId:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'ChallengeRoom'},
+                date:{type:Date,required:true}
+                
+        }]
     
 });
 
@@ -96,7 +103,8 @@ const itemsBought=new mongoose.Schema({
     name:{type:String,required:true},
     type:{type:String,enum: ["avatar", "theme", "pet"],required:true},
     cost:{type:Number,required:true},
-    image:{type:String,required:true}
+    image:{type:String,required:true},
+    bonusPercent: { type: Number, default: 0 }
 })
 
 const badgeModel=new mongoose.Schema({

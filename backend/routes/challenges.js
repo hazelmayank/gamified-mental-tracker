@@ -5,6 +5,7 @@ const zod=require("zod");
 const { User } = require("../db");
 
 const {ChallengeRoom}=require('../db');
+const {StoreItem} =require('../db');
 const { authMiddleware } = require("../middleware");
 
 const createChallengeSchema = zod.object({
@@ -75,6 +76,9 @@ router.post('/submit/:id',authMiddleware,async (req,res)=>{
     return res.status(400).json({ msg: "Invalid input", errors: parsed.error.errors });
   }
   const {text}=parsed.data;
+  const challengeId=req.params.id;
+  const today=new Date();
+  today.setHours(0,0,0,0);
     
     try{
 
@@ -88,6 +92,23 @@ const challenge=await ChallengeRoom.findById(req.params.id);
       return res.status(403).json({ msg: "You are not part of this challenge" });
     }
 
+    const user = await User.findById(req.user.id);
+
+    const previousLevel=user.level;
+    
+
+    const alreadySubmitted = user.challengeProgress.some((entry) =>
+  entry.challengeId.toString() === challengeId &&
+  new Date(entry.date).getTime() === today.getTime()
+);
+
+
+    if(alreadySubmitted){
+      return res.status(400).json({
+        msg:"You have already submitted the progress today!"
+      })
+    }
+
     challenge.submissions.push({
       user: req.user.id,
       text,
@@ -95,15 +116,36 @@ const challenge=await ChallengeRoom.findById(req.params.id);
     });
 
      await challenge.save();
-    const user = await User.findById(req.user.id);
-    user.xp += 10;
+    
+    let baseXP = 10;
+let bonusXP = 0;
+
+if (user.equippedPet) {
+  const petItem = await StoreItem.findOne({ name: user.equippedPet, type: "pet" });
+  if (petItem && petItem.bonusPercent) {
+    bonusXP = Math.floor(baseXP * (petItem.bonusPercent / 100));
+  }
+}
+
+const totalXP = baseXP + bonusXP;
+user.xp += totalXP;
+const xpGained=totalXP;
+
+    user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
+    const leveledUp = user.level > previousLevel;
+
+    user.challengeProgress.push({
+      challengeId,
+      date:today
+    })
 
      await user.save();
-      res.json({ msg: "Submission successful" });
+      res.status(200).json({ msg: "Submission successful, XP awarded" , xpGained, leveledUp, bonusXP, newLevel: user.level });
 
 
     }
     catch(err){
+      console.log("Challenge Submission Error ", err);
 return res.status(500).json({
     msg:"Failed to submit the challenge"
 })
