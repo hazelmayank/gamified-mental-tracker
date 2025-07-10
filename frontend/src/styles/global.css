@@ -6,7 +6,7 @@
 
 body {
   margin: 0;
-  padding:60px;
+  padding:60px 0;
   font-family: 'Segoe UI', 'Roboto', sans-serif;
   background-color: #f6f9fc;
   color: #333;

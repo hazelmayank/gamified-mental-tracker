@@ -3,6 +3,7 @@ const { authMiddleware } = require("../middleware");
 const router=express.Router();
 const zod=require("zod");
 const { Entry,User } = require("../db");
+const {StoreItem} =require('../db');
 // const { checkandUnlock } = require("../achievements");
 
 const entrySchema=zod.object({
@@ -36,7 +37,7 @@ try{
       if (journalText) xpEarned += 5;
       if (habits.length > 0) xpEarned += habits.length * 2;
         
-        const new_entry=await Entry.create({
+    const new_entry=await Entry.create({
             user:req.user.id,
             date:today,
              mood,
@@ -44,16 +45,32 @@ try{
         habits,
         xpEarned
         })
- await User.findByIdAndUpdate(req.user.id, {
-        $inc: { xp: xpEarned }
-      });
+     
+        const user=await User.findById(req.user.id);
+       let bonusXP = 0;
+if (user.equippedPet) {
+  const petItem = await StoreItem.findOne({ name: user.equippedPet, type: "pet" });
+  if (petItem && petItem.bonusPercent) {
+    bonusXP = Math.floor(xpEarned * (petItem.bonusPercent / 100));
+  }
+}
+
+const totalXP = xpEarned + bonusXP;
+const previousLevel = user.level;
+
+user.xp += totalXP;
+
+        user.level=Math.floor(0.1*Math.sqrt(user.xp))+1;
+        const leveledUp = user.level > previousLevel;
+        await user.save();
 
     //   await checkandUnlock(req.user.id);
+        
 
-
-         return res.status(201).json({ msg: "Entry created", xpEarned });
+         return res.status(201).json({ msg: "Entry created", xpEarned,bonusXP,leveledUp,newLevel:user.level });
     }
     else{
+
     entry.mood = mood;
       entry.journalText = journalText;
       entry.habits = habits; 
@@ -146,25 +163,37 @@ router.get('/stats',authMiddleware,async function (req,res) {
 });
 
 
-router.delete('/:id',authMiddleware,async (req,res)=>{
-    try{
+router.delete('/:id', authMiddleware, async (req, res) => {
+  try {
+    // First fetch the entry to access its data
+    const entry = await Entry.findOne({
+      _id: req.params.id,
+      user: req.user.id
+    });
 
-        const deleted=await Entry.findOneAndDelete({
-            _id:req.params.id,
-            user:req.user.id
-        })
+    if (!entry) {
+      return res.status(404).json({
+        msg: "This entry not found or not yours"
+      });
+    }
 
-        if(!deleted){
-            return res.status(404).json({
-                msg:"This entry not found or not yours"
-            })
-        }
-res.json({ msg: "Entry deleted" });
-    }
-    catch(err){
- res.status(500).json({ msg: "Failed to delete entry" });
-    }
-})
+    const xpTobeDeducted = entry.habits.length * 2 + 15;
+
+    await Entry.deleteOne({ _id: req.params.id }); 
+
+    const user = await User.findById(req.user.id);
+    user.xp = Math.max(0, user.xp - xpTobeDeducted);
+    user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
+
+    await user.save();
+
+    res.json({ msg: "Entry deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Failed to delete entry" });
+  }
+});
+
 
 module.exports=router;
 

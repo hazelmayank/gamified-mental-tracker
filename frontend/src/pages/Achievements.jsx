@@ -4,7 +4,7 @@ import "./Achievements.css";
 
 export default function Achievements(){
 
-     const [allAchievements, setAllAchievements] = useState([]);
+  const [allAchievements, setAllAchievements] = useState([]);
   const [unlocked, setUnlocked] = useState([]);
 
     useEffect(() => {
@@ -14,9 +14,11 @@ export default function Achievements(){
           axios.get("/achievements"),
           axios.get("/achievements/unlocked")
         ]);
+
         setAllAchievements(all.data.achievements || []);
         setUnlocked(unlocked.data.achievements.map(a => a._id));
-      } catch (err) {
+      } 
+      catch (err) {
         console.error("Failed to load achievements", err);
       }
     };

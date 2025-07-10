@@ -28,7 +28,7 @@ catch(err){
       alert(err.response?.data?.msg || 'Login failed');
 }
 finally{
-  setLoading(false)
+      setLoading(false);
 }
 
 }
@@ -51,7 +51,7 @@ finally{
     <p className='register-link'>
         Don't have an Account? <a href='/register'>Register</a>
     </p>
-
+ 
        </div>
     
     </div>

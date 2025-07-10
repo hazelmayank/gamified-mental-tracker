@@ -67,6 +67,7 @@ router.get('/leaderboard',async function(req,res){
             topUsers
         })
     }
+    //Sorting me -1 is for descending order
     catch(err){
         return res.status(500).json({
             msg:"Failed to fetch the leaderboard"
@@ -160,6 +161,22 @@ router.post('/equip-pet',authMiddleware,async (req,res)=>{
   user.equippedPet=petName;
   await user.save();
    res.json({ msg: `${petName} equipped successfully!`, pet: petName });
+});
+
+router.post('/equip-avatar',authMiddleware,async (req,res)=>{
+  const {avatar}=req.body;
+  const user=await User.findById(req.user.id);
+  if(!user.inventory.includes(avatar)){
+    return res.status(400).json({
+      msg:"No such avatar found in inventory"
+    })
+  };
+
+  user.avatar=avatar;
+  await user.save();
+  return res.json({
+    msg:`${avatar} equipped successfully!`
+  })
 })
 
 module.exports=router;

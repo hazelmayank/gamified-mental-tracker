@@ -4,6 +4,7 @@ import axios from "../axios";
 import "./MyChallenges.css";
 
 export default function MyChallenges() {
+  
   const [challenges, setChallenges] = useState([]);
   const navigate = useNavigate();
 

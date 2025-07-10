@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import api from "../axios";
 import "./JournalEntry.css";
+import { useToast } from "../context/ToastContext"; // ✅ Import toast
 
 const moodOptions = ["Happy", "Sad", "Anxious", "Angry", "Calm", "Motivated"];
 const habitOptions = ["Meditation", "Exercise", "Gratitude", "Reading", "Sleep 8+ hrs"];
@@ -10,6 +11,7 @@ export default function JournalEntry() {
   const [journalText, setJournalText] = useState("");
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { showToast } = useToast(); // ✅ Get toast method
 
   const handleHabitchange = (habit) => {
     setHabits((prev) =>
@@ -28,14 +30,40 @@ export default function JournalEntry() {
         habits
       });
 
-      alert(res.data.msg || "Entry submitted!");
+      const isUpdate = res.data.msg === "Entry updated";
+
+      if (isUpdate) {
+        showToast("📝 Today's entry has been updated!", "info");
+      } else {
+        showToast(`✅ Entry created! +${res.data.xpEarned} XP earned!`, "success");
+
+        if (res.data.bonusXP) {
+          showToast(`🐾 Pet Bonus! +${res.data.bonusXP} XP`, "info");
+        }
+
+        if (res.data.leveledUp) {
+          showToast(`🎉 Level Up! You're now Level ${res.data.newLevel}!`, "success");
+        }
+
+        const res2 = await api.post("/achievements/unlock");
+    if (res2.data.unlocked?.length > 0) {
+  res2.data.unlocked.forEach(name =>
+    showToast(`🏅 New Achievement Unlocked: ${name}`, "success")
+  );
+        }
+
+      }
+
+
+
+      // Clear form
       setMood("");
       setJournalText("");
       setHabits([]);
 
-      alert("Thanks for reflecting today! You've earned some XP!");
     } catch (err) {
-      alert("Error submitting entry");
+      // console.log("Error is " ,err);
+      showToast("❌ Error submitting entry", "error");
     } finally {
       setLoading(false);
     }

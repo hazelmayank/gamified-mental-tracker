@@ -43,7 +43,7 @@ function App() {
         <Route path="/challenges" element={<Allchallenges />} />
         <Route path="/challenges/create" element={<PrivateRoute><CreateChallenge /></PrivateRoute>} />
         <Route path="/challenge/:id" element={<PrivateRoute><ChallengeRoom /></PrivateRoute>} />
-        <Route path="/my-challenges" element={<PrivateRoute><MyChallenges /></PrivateRoute>} />
+        <Route path="/my-challenges" element={<PrivateRoute><MyChallenges /></PrivateRoute>} /> 
         <Route path="/find-friends" element={<SendFriendRequest />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
