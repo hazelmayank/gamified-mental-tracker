@@ -20,6 +20,7 @@ import Store from './pages/Store'
 import EntriesList from './pages/EntryList'
 import TodayEntry from './pages/TodayEntry'
 import JournalStats from './pages/JournalStats';
+import ViewProfile from './pages/ViewProfile'
 // import Home from './pages/Home'
 import HomeLanding from './pages/HomeLanding'
 import Footer from "./components/Footer";
@@ -54,7 +55,8 @@ function App() {
         {/* <Route path="/home" element={<Home />} /> */}
         <Route path='/login' element={<Login />} />
     <Route path="/mypets" element={<MyPets />} />
-
+     
+<Route path="/view-profile" element={<ViewProfile></ViewProfile>}></Route>
       </Routes>
       {/* <Footer /> */}
     </>

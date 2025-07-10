@@ -143,6 +143,28 @@ router.post('/respond',authMiddleware,async (req,res)=>{
 });
 
 
+router.get('/:id', authMiddleware, async (req, res) => {
+  const friendId = req.params.id;
+  try {
+    const friend = await User.findById(friendId);
+
+    if (!friend) return res.status(404).json({ message: "User not found" });
+//only needed fields
+    const friendInfo = {
+      username: friend.username,
+      avatarUrl: friend.avatar,
+      level: friend.level,
+      xp: friend.xp,
+      pet: friend.equippedPet,
+    };
+    // console.log(friendInfo);
+    res.status(200).json(friendInfo);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 router.delete('/:id', authMiddleware, async (req, res) => {
   const friendId = req.params.id;
 

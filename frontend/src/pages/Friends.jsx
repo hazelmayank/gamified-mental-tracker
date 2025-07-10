@@ -14,6 +14,11 @@ export default function Friends() {
     setFriends(r2.data.friends || []);
   };
 
+  const viewProfile = async (id) => {
+  navigate(`/view-profile/?id=${id}`); 
+  };
+
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -58,8 +63,9 @@ export default function Friends() {
           <div className="card-list">
             {friends.map((friend) => (
               <div className="friend-card" key={friend._id}>
-                <span>{friend.username}</span>
-                <button onClick={() => handleUnfriend(friend._id)}>Unfriend</button>
+               <span>{friend.username}</span>
+                <div id="enigma_spacing"><button onClick={() => viewProfile(friend._id)}>View Profile</button>
+                <button onClick={() => handleUnfriend(friend._id)}>Unfriend</button></div> 
               </div>
             ))}
           </div>
