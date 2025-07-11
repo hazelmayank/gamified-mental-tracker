@@ -1,82 +1,192 @@
-.friends-page {
-  max-width: 700px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #f8fbff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+/* Ocean background wrapper */
+.friends-wrapper {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #89f7fe 0%, #66a6ff 100%);
+  overflow: hidden;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
+/* Main floating card container */
+.friends-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 5;
+}
+
+/* Headings */
 .friends-page h2 {
   text-align: center;
-  color: #3b3f58;
+  color: #03588c;
   margin-bottom: 2rem;
 }
 
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .section h3 {
-  color: #1f4d7a;
+  color: #013a63;
   margin-bottom: 1rem;
 }
 
+/* Card List */
 .card-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
+/* Friend Cards */
 .friend-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: white;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.friend-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .friend-card span {
   font-size: 1rem;
-  color: #333;
+  color: #012a4a;
 }
 
+/* Action Buttons */
 .friend-card button {
   background-color: #2563eb;
   color: white;
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s ease;
+  margin-left: 6px;
 }
 
 .friend-card button:hover {
   background-color: #1e40af;
 }
+
+#enigma_spacing button {
+  margin: 0 4px;
+}
+
+/* Find Friends Button */
 .find-friends-button {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
 .find-friends-button button {
   background-color: #10b981;
   color: white;
-  padding: 10px 16px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 
 .find-friends-button button:hover {
   background-color: #059669;
 }
 
-#enigma_spacing button{
-  margin:2px;
+/* Floating Fish */
+.fish {
+  position: absolute;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+  animation: swim linear infinite;
+}
+
+.fish-1 {
+  bottom: 20%;
+  left: -100px;
+  animation-duration: 20s;
+  animation-delay: 0s;
+}
+
+.fish-2 {
+  bottom: 60%;
+  left: -150px;
+  animation-duration: 24s;
+  animation-delay: 4s;
+}
+
+@keyframes swim {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(120vw);
+  }
+}
+
+/* Floating Bubbles */
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: rise 12s infinite ease-in;
+  z-index: 1;
+}
+
+.bubble-1 { width: 20px; height: 20px; left: 10%; animation-duration: 14s; }
+.bubble-2 { width: 30px; height: 30px; left: 25%; animation-duration: 10s; }
+.bubble-3 { width: 15px; height: 15px; left: 50%; animation-duration: 12s; }
+.bubble-4 { width: 25px; height: 25px; left: 75%; animation-duration: 16s; }
+.bubble-5 { width: 18px; height: 18px; left: 40%; animation-duration: 18s; }
+
+@keyframes rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-800px);
+    opacity: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .friend-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .friend-card button {
+    align-self: flex-end;
+  }
+
+  .section h3 {
+    font-size: 1rem;
+  }
+
+  .friends-page {
+    padding: 1.5rem;
+  }
 }
