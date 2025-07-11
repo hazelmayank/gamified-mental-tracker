@@ -26,30 +26,40 @@ export default function Store() {
       setXP(res.data.xp);
       setInventory(res.data.inventory);
     } catch (err) {
-      alert(err.response.data.msg || 'Failed to purchase');
+      alert(err.response?.data?.msg || 'Failed to purchase');
     }
   };
 
   return (
-    <div className="store">
-      <h2>🛒 Mental Health Store</h2>
-      <p>Your XP: <strong>{xp}</strong></p>
+    <div className="store-wrapper">
+      {/* Ocean Background Layers */}
+      <div className="bubble bubble-1"></div>
+      <div className="bubble bubble-2"></div>
+      <div className="bubble bubble-3"></div>
+      <div className="bubble bubble-4"></div>
+      <img src="/assets/ocean/fish1.svg" className="fish fish-1" alt="fish" />
+      <img src="/assets/ocean/fish2.svg" className="fish fish-2" alt="fish" />
 
-      <div className="store-grid">
-        {items.map((item) => (
-          <div key={item.name} className="store-item">
-            <img src={`/assets/pets/${item.image}`} alt={item.name} />
+      {/* Store Content */}
+      <div className="store">
+        <h2>🛒 Mental Health Store</h2>
+        <p>Your XP: <strong>{xp}</strong></p>
 
-            <h4>{item.name}</h4>
-            <p>Type: {item.type}</p>
-            <p>Cost: {item.cost} XP</p>
-            {inventory.includes(item.name) ? (
-              <span className="owned">✅ Owned</span>
-            ) : (
-              <button onClick={() => handleBuy(item.name)}>Buy</button>
-            )}
-          </div>
-        ))}
+        <div className="store-grid">
+          {items.map((item) => (
+            <div key={item.name} className="store-item">
+              <img src={`/assets/pets/${item.image}`} alt={item.name} />
+              <h4>{item.name}</h4>
+              <p>Type: {item.type}</p>
+              <p>Cost: {item.cost} XP</p>
+              {inventory.includes(item.name) ? (
+                <span className="owned">✅ Owned</span>
+              ) : (
+                <button onClick={() => handleBuy(item.name)}>Buy</button>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

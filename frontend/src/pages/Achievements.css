@@ -1,27 +1,101 @@
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #89f7fe 0%, #66a6ff 100%);
+  font-family: 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Wrapper for floating effects */
+.ocean-wrapper {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Bubbles */
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: rise 12s infinite ease-in;
+  z-index: 1;
+}
+.bubble-1 { width: 20px; height: 20px; left: 5%; animation-duration: 14s; }
+.bubble-2 { width: 30px; height: 30px; left: 25%; animation-duration: 10s; }
+.bubble-3 { width: 15px; height: 15px; left: 45%; animation-duration: 12s; }
+.bubble-4 { width: 25px; height: 25px; left: 65%; animation-duration: 16s; }
+.bubble-5 { width: 22px; height: 22px; left: 85%; animation-duration: 13s; }
+
+@keyframes rise {
+  0% { transform: translateY(0); opacity: 0.5; }
+  100% { transform: translateY(-800px); opacity: 0; }
+}
+
+/* Fish animation */
+.fish {
+  position: absolute;
+  width: 80px;
+  z-index: 2;
+  animation: swim 18s linear infinite;
+  pointer-events: none;
+}
+.fish-1 {
+  bottom: 100px;
+  left: -120px;
+  animation-delay: 0s;
+}
+.fish-2 {
+  bottom: 220px;
+  left: -150px;
+  animation-delay: 4s;
+}
+@keyframes swim {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(120vw); }
+}
+
+/* Page content */
 .achievements-page {
   text-align: center;
   padding: 2rem;
+  z-index: 5;
+  position: relative;
 }
 
+.achievements-page h1 {
+  color: #014f86;
+  font-size: 2.3rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Cards */
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
 }
 
 .achievement-card {
-  position: relative;
-  background: #f8f8f8;
-  border: 2px solid #ccc;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border: 2px solid #ffffff33;
   padding: 1.2rem;
-  border-radius: 12px;
+  border-radius: 16px;
   transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  color: #012a4a;
+  position: relative;
+}
+
+.achievement-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 .achievement-card.unlocked {
-  border-color: #4CAF50;
-  background: #eaffea;
+  border-color: #1dd3b0;
+  background: rgba(206, 255, 235, 0.4);
 }
 
 .achievement-card.locked {
@@ -29,15 +103,22 @@
   filter: grayscale(80%);
 }
 
-.achievement-card .criteria {
-  font-size: 0.8rem;
-  color: #555;
+.achievement-description {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  color: #2c6e91;
+}
+
+.criteria {
+  font-size: 0.85rem;
+  color: #397aa8;
   margin-top: 0.5rem;
 }
 
 .locked-overlay {
   position: absolute;
-  top: 8px;
+  top: 10px;
   right: 12px;
   font-size: 1.3rem;
+  color: #013a63;
 }
