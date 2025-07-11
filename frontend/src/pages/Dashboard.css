@@ -101,12 +101,16 @@ body {
 }
 
 .avatar {
+  /* position: absolute; */
+  position: relative;
+  top: -320px;
   width: 96px;
   height: 96px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #b3e5fc;
   background-color: #ffffff;
+
 }
 
 .welcome-section h2 {

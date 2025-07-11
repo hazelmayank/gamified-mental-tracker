@@ -1,15 +1,164 @@
+/* Wrapper with ocean background and floating bubbles/fish */
+.mypets-wrapper {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(to bottom, #89f7fe, #66a6ff);
+  overflow: hidden;
+}
+
+/* Title and layout */
+.mypets {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.mypets h2 {
+  font-size: 2rem;
+  color: #03588c;
+  margin-bottom: 2rem;
+}
+
+/* No pets message */
+.no-pets {
+  color: #05445e;
+  font-size: 1rem;
+}
+
+/* Pet grid */
 .pet-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 20px;
+  justify-content: center;
 }
+
+/* Pet card with glass effect */
 .pet-card {
-  padding: 12px;
-  border-radius: 12px;
-  background: #f3f3f3;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1rem;
   width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   text-align: center;
+  transition: transform 0.25s ease;
 }
+
+.pet-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Pet image */
 .pet-card img {
   width: 100px;
+  height: 100px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1));
+  margin-bottom: 0.5rem;
+}
+
+/* Pet name */
+.pet-name {
+  color: #014f86;
+  font-weight: 500;
+  margin: 0.5rem 0;
+}
+
+/* Equip button */
+.pet-card button {
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.pet-card button:hover {
+  background-color: #0288a7;
+}
+
+/* Equipped label */
+.equipped-label {
+  color: #1dd3b0;
+  font-weight: bold;
+}
+
+/* Fish animations */
+.fish {
+  position: absolute;
+  width: 80px;
+  z-index: 2;
+  animation: swim 20s linear infinite;
+  pointer-events: none;
+}
+
+.fish-1 {
+  bottom: 80px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.fish-2 {
+  bottom: 200px;
+  left: -160px;
+  animation-delay: 4s;
+}
+
+@keyframes swim {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(120vw);
+  }
+}
+
+/* Bubbles */
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: rise 14s infinite ease-in;
+  z-index: 1;
+}
+
+.bubble-1 {
+  width: 20px;
+  height: 20px;
+  left: 10%;
+  animation-duration: 18s;
+}
+
+.bubble-2 {
+  width: 30px;
+  height: 30px;
+  left: 35%;
+  animation-duration: 12s;
+}
+
+.bubble-3 {
+  width: 15px;
+  height: 15px;
+  left: 60%;
+  animation-duration: 16s;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-800px);
+    opacity: 0;
+  }
 }

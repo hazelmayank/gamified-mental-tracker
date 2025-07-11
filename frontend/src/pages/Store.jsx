@@ -9,12 +9,16 @@ export default function Store() {
 
   useEffect(() => {
     async function fetchData() {
-      const itemsRes = await axios.get('/store');
-      setItems(itemsRes.data.allItems || []);
-      
-      const userRes = await axios.get('/user/me');
-      setXP(userRes.data.user.xp);
-      setInventory(userRes.data.user.inventory || []);
+      try {
+        const itemsRes = await axios.get('/store');
+        setItems(itemsRes.data.allItems || []);
+        
+        const userRes = await axios.get('/user/me');
+        setXP(userRes.data.user.xp);
+        setInventory(userRes.data.user.inventory || []);
+      } catch (err) {
+        console.error("Error fetching store data", err);
+      }
     }
     fetchData();
   }, []);
@@ -32,13 +36,17 @@ export default function Store() {
 
   return (
     <div className="store-wrapper">
-      {/* Ocean Background Layers */}
+      {/* Ocean Background Bubbles */}
       <div className="bubble bubble-1"></div>
       <div className="bubble bubble-2"></div>
       <div className="bubble bubble-3"></div>
       <div className="bubble bubble-4"></div>
+      <div className="bubble bubble-5"></div>
+      <div className="bubble bubble-6"></div>
+
+      {/* Floating Fish */}
       <img src="/assets/ocean/fish1.svg" className="fish fish-1" alt="fish" />
-      <img src="/assets/ocean/fish2.svg" className="fish fish-2" alt="fish" />
+      <img src="/assets/ocean/fish2.svg" className="fish fish-2" alt="jellyfish" />
 
       {/* Store Content */}
       <div className="store">
