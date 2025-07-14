@@ -3,41 +3,82 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding-top: 4rem;
-  box-sizing: border-box;
+  background: linear-gradient(to bottom, #89f7fe, #66a6ff);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Optional bubbles/fish can be reused here too */
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: rise 12s infinite ease-in;
+  z-index: 1;
+}
+
+.bubble-1 { width: 20px; height: 20px; left: 10%; animation-duration: 14s; }
+.bubble-2 { width: 30px; height: 30px; left: 25%; animation-duration: 10s; }
+.bubble-3 { width: 15px; height: 15px; left: 50%; animation-duration: 12s; }
+.bubble-4 { width: 25px; height: 25px; left: 75%; animation-duration: 16s; }
+
+@keyframes rise {
+  0% { transform: translateY(0); opacity: 0.4; }
+  100% { transform: translateY(-800px); opacity: 0; }
 }
 
 .register-card {
-  background-color: white;
-  padding: 2rem 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
   text-align: center;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .register-card h2 {
   margin-bottom: 0.5rem;
   font-size: 1.6rem;
-  color: #2b4f81;
+  color: #ffffff;
 }
 
 .register-card p {
   margin-bottom: 1.5rem;
-  color: #666;
+  color: #e0f7fa;
 }
 
 .register-card input {
   width: 100%;
   padding: 10px;
   margin-bottom: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 6px;
   font-size: 1rem;
+  background: rgba(255, 255, 255, 0.4);
+  color: #003049;
+  outline: none;
 }
 
 .register-card button {
   width: 100%;
   margin-top: 0.5rem;
+  padding: 0.75rem;
+  background-color: #2b4f81;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.register-card button:hover {
+  background-color: #1d3557;
 }
