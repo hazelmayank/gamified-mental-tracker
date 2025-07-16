@@ -135,3 +135,14 @@ router.post('/signin',async function(req,res){
 })
 
 module.exports = router;
+
+//http://localhost:3000/api/v1/auth/signup
+
+/*
+{
+ "username":"mayank01890",
+ "email":"mayankjeefinal@gmail.com",
+ "password":"123456"
+}
+
+*/
