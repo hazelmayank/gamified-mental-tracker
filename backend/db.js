@@ -22,6 +22,15 @@ const userSchema=new mongoose.Schema({
         type:Number,
         default:0
     },
+    xpClaimedToday: {
+  type: Date,
+  default: null
+}
+,
+    coins:{
+        type:Number,
+        default:0
+    },
     level:{
         type:Number,
         default:1

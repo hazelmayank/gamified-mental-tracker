@@ -69,88 +69,80 @@ router.post('/join/:id',authMiddleware,async (req,res)=>{
     }
 });
 
-router.post('/submit/:id',authMiddleware,async (req,res)=>{
-
-    const parsed = submissionSchema.safeParse(req.body);
+router.post('/submit/:id', authMiddleware, async (req, res) => {
+  const parsed = submissionSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ msg: "Invalid input", errors: parsed.error.errors });
   }
-  const {text}=parsed.data;
-  const challengeId=req.params.id;
-  const today=new Date();
-  today.setHours(0,0,0,0);
-    
-    try{
 
-const challenge=await ChallengeRoom.findById(req.params.id);
-    if(!challenge){
-        return res.status(404).json({
-            msg:"The challenge doesn't exists"
-        })
+  const { text } = parsed.data;
+  const challengeId = req.params.id;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  try {
+    const challenge = await ChallengeRoom.findById(challengeId);
+    if (!challenge) {
+      return res.status(404).json({ msg: "The challenge doesn't exist" });
     }
-     if (!challenge.participants.includes(req.user.id)) {
+
+    if (!challenge.participants.includes(req.user.id)) {
       return res.status(403).json({ msg: "You are not part of this challenge" });
     }
 
     const user = await User.findById(req.user.id);
 
-    const previousLevel=user.level;
-    
+    const alreadySubmitted = user.challengeProgress.some(
+      (entry) =>
+        entry.challengeId.toString() === challengeId &&
+        new Date(entry.date).getTime() === today.getTime()
+    );
 
-    const alreadySubmitted = user.challengeProgress.some((entry) =>
-  entry.challengeId.toString() === challengeId &&
-  new Date(entry.date).getTime() === today.getTime()
-);
-
-
-    if(alreadySubmitted){
-      return res.status(400).json({
-        msg:"You have already submitted the progress today!"
-      })
+    if (alreadySubmitted) {
+      return res.status(400).json({ msg: "You have already submitted the progress today!" });
     }
 
+    // Store the submission
     challenge.submissions.push({
       user: req.user.id,
       text,
-     
     });
+    await challenge.save();
 
-     await challenge.save();
-    
-    let baseXP = 10;
-let bonusXP = 0;
+    // Coin logic instead of XP
+    let baseCoins = 10;
+    let bonusCoins = 0;
 
-if (user.equippedPet) {
-  const petItem = await StoreItem.findOne({ name: user.equippedPet, type: "pet" });
-  if (petItem && petItem.bonusPercent) {
-    bonusXP = Math.floor(baseXP * (petItem.bonusPercent / 100));
-  }
-}
+    if (user.equippedPet) {
+      const petItem = await StoreItem.findOne({ name: user.equippedPet, type: "pet" });
+      if (petItem && petItem.bonusPercent) {
+        bonusCoins = Math.floor(baseCoins * (petItem.bonusPercent / 100));
+      }
+    }
 
-const totalXP = baseXP + bonusXP;
-user.xp += totalXP;
-const xpGained=totalXP;
+    const totalCoins = baseCoins + bonusCoins;
+    user.coins = (user.coins || 0) + totalCoins;
 
-    user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
-    const leveledUp = user.level > previousLevel;
-
+    // Save challenge progress history (used to prevent duplicate)
     user.challengeProgress.push({
       challengeId,
-      date:today
-    })
+      date: today
+    });
 
-     await user.save();
-      res.status(200).json({ msg: "Submission successful, XP awarded" , xpGained, leveledUp, bonusXP, newLevel: user.level });
+    await user.save();
 
+    res.status(200).json({
+      msg: "Submission successful, coins awarded",
+      coinsGained: totalCoins,
+      bonusCoins
+    });
 
-    }
-    catch(err){
-      console.log("Challenge Submission Error ", err);
-return res.status(500).json({
-    msg:"Failed to submit the challenge"
-})
-    }
-})
+  } catch (err) {
+    console.log("Challenge Submission Error", err);
+    return res.status(500).json({ msg: "Failed to submit the challenge" });
+  }
+});
+
 
 router.get('/my',authMiddleware,async (req,res) => {
 
