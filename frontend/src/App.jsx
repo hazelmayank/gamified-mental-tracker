@@ -25,6 +25,8 @@ import ViewProfile from './pages/ViewProfile'
 import HomeLanding from './pages/HomeLanding'
 import Footer from "./components/Footer";
 import MyPets from './pages/MyPets'
+import Logout from "./pages/Logout"; // adjust path if needed
+
 
 
 
@@ -55,6 +57,7 @@ function App() {
         {/* <Route path="/home" element={<Home />} /> */}
         <Route path='/login' element={<Login />} />
     <Route path="/mypets" element={<MyPets />} />
+     <Route path="/logout" element={<Logout />} />
      
 <Route path="/view-profile" element={<ViewProfile></ViewProfile>}></Route>
       </Routes>
