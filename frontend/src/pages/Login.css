@@ -1,82 +1,32 @@
-/* Ocean login page styling */
+/* Login.css */
+
 .login-page {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  position: relative;
-  background: linear-gradient(to bottom, #89f7fe 0%, #66a6ff 100%);
+  background-color: #f7fafd;
   font-family: 'Segoe UI', sans-serif;
-  overflow: hidden;
 }
 
-/* Bubbles */
-.bubble {
-  position: absolute;
-  bottom: -100px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  animation: rise 12s infinite ease-in;
-  z-index: 1;
-}
-.bubble-1 { width: 20px; height: 20px; left: 10%; animation-duration: 14s; }
-.bubble-2 { width: 30px; height: 30px; left: 25%; animation-duration: 10s; }
-.bubble-3 { width: 15px; height: 15px; left: 50%; animation-duration: 12s; }
-.bubble-4 { width: 25px; height: 25px; left: 75%; animation-duration: 16s; }
-
-@keyframes rise {
-  0% { transform: translateY(0); opacity: 0.4; }
-  100% { transform: translateY(-800px); opacity: 0; }
-}
-
-/* Fish animations */
-.fish {
-  position: absolute;
-  width: 80px;
-  z-index: 2;
-  animation: swim linear infinite;
-  pointer-events: none;
-}
-.fish-1 {
-  bottom: 120px;
-  left: -100px;
-  animation-duration: 18s;
-  animation-delay: 0s;
-}
-.fish-2 {
-  top: 160px;
-  left: -140px;
-  animation-duration: 22s;
-  animation-delay: 3s;
-}
-@keyframes swim {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(120vw); }
-}
-
-/* Translucent login card */
 .login-box {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background-color: #ffffff;
   padding: 2.5rem 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
   text-align: center;
-  z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .login-box h2 {
-  color: #ffffff;
+  color: #2b4f81;
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
   font-size: 0.9rem;
-  color: #e0f7fa;
+  color: #666;
   margin-bottom: 1.5rem;
 }
 
@@ -85,19 +35,16 @@
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid #cbd5e1;
   border-radius: 6px;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.4);
-  color: #003049;
-  outline: none;
 }
 
 .login-box button {
   width: 100%;
   padding: 0.75rem;
   background-color: #2b4f81;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
@@ -112,11 +59,10 @@
 .register-link {
   margin-top: 1rem;
   font-size: 0.9rem;
-  color: white;
 }
 
 .register-link a {
-  color: #e0ffff;
+  color: #2b4f81;
   text-decoration: none;
 }
 
