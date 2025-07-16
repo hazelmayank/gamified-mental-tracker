@@ -12,84 +12,97 @@ const entrySchema=zod.object({
   habits: zod.array(zod.string()).optional()
 })
 
-router.post('/',authMiddleware,async(req,res)=>{
-const result=entrySchema.safeParse(req.body);
+router.post('/', authMiddleware, async (req, res) => {
+  const result = entrySchema.safeParse(req.body);
 
-if(!result.success){
+  if (!result.success) {
     return res.status(400).json({
-        msg:"Invalid Entry Data",
-        error:result.error.errors
-    })
-}
+      msg: "Invalid Entry Data",
+      error: result.error.errors
+    });
+  }
 
-const {mood,journalText,habits=[]}=result.data;
+  const { mood, journalText, habits = [] } = result.data;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-const today=new Date();
-today.setHours(0,0,0,0);
+  try {
+    let entry = await Entry.findOne({ user: req.user.id, date: today });
 
-try{
-    let entry=await Entry.findOne({user:req.user.id , date:today});
+    let xpEarned = 0;
+    let coinsEarned = 0;
 
-    let xpEarned=0;
-
-    if(!entry){
-          xpEarned = 10;
+    if (!entry) {
+      // XP logic
+      xpEarned = 10;
       if (journalText) xpEarned += 5;
       if (habits.length > 0) xpEarned += habits.length * 2;
-        
-    const new_entry=await Entry.create({
-            user:req.user.id,
-            date:today,
-             mood,
+
+      // Coin logic
+      coinsEarned = 5; // base coins
+      if (journalText) coinsEarned += 2;
+      coinsEarned += habits.length * 4; // +4 per habit
+
+      // Create new entry
+      const newEntry = await Entry.create({
+        user: req.user.id,
+        date: today,
+        mood,
         journalText,
         habits,
         xpEarned
-        })
-     
-        const user=await User.findById(req.user.id);
-       let bonusXP = 0;
-if (user.equippedPet) {
-  const petItem = await StoreItem.findOne({ name: user.equippedPet, type: "pet" });
-  if (petItem && petItem.bonusPercent) {
-    bonusXP = Math.floor(xpEarned * (petItem.bonusPercent / 100));
-  }
-}
+      });
 
-const totalXP = xpEarned + bonusXP;
-const previousLevel = user.level;
+      const user = await User.findById(req.user.id);
 
-user.xp += totalXP;
+      // Pet XP bonus logic
+      let bonusXP = 0;
+      if (user.equippedPet) {
+        const petItem = await StoreItem.findOne({
+          name: user.equippedPet,
+          type: "pet"
+        });
+        if (petItem?.bonusPercent) {
+          bonusXP = Math.floor(xpEarned * (petItem.bonusPercent / 100));
+        }
+      }
 
-        user.level=Math.floor(0.1*Math.sqrt(user.xp))+1;
-        const leveledUp = user.level > previousLevel;
-        await user.save();
+      const totalXP = xpEarned + bonusXP;
+      const previousLevel = user.level;
 
-    //   await checkandUnlock(req.user.id);
-        
+      // Update user XP, level, coins
+      user.xp += totalXP;
+      user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
+      user.coins = (user.coins || 0) + coinsEarned;
 
-         return res.status(201).json({ msg: "Entry created", xpEarned,bonusXP,leveledUp,newLevel:user.level });
-    }
-    else{
+      const leveledUp = user.level > previousLevel;
 
-    entry.mood = mood;
+      await user.save();
+
+      return res.status(201).json({
+        msg: "Entry created",
+        xpEarned,
+        bonusXP,
+        coinsEarned,
+        newCoins: user.coins,
+        leveledUp,
+        newLevel: user.level
+      });
+    } else {
+      // Update existing entry (no XP/coin re-reward)
+      entry.mood = mood;
       entry.journalText = journalText;
-      entry.habits = habits; 
+      entry.habits = habits;
       await entry.save();
-      return res.json({ msg: "Entry updated" });
+
+      return res.json({ msg: "Entry updated (no XP/coin changes)" });
     }
-    
-
-
-}
-catch(err){
-
-   console.error(err);
+  } catch (err) {
+    console.error(err);
     return res.status(500).json({ msg: "Failed to submit entry" });
+  }
+});
 
-}
-
-
-})
 
 router.get('/today',authMiddleware,async (req,res)=>{
              const today=new Date();
