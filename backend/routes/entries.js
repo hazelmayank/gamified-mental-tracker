@@ -11,10 +11,8 @@ const entrySchema=zod.object({
      journalText: zod.string().optional(),
   habits: zod.array(zod.string()).optional()
 })
-
 router.post('/', authMiddleware, async (req, res) => {
   const result = entrySchema.safeParse(req.body);
-
   if (!result.success) {
     return res.status(400).json({
       msg: "Invalid Entry Data",
@@ -28,54 +26,54 @@ router.post('/', authMiddleware, async (req, res) => {
 
   try {
     let entry = await Entry.findOne({ user: req.user.id, date: today });
+    const user = await User.findById(req.user.id);
 
     let xpEarned = 0;
     let coinsEarned = 0;
+    let bonusXP = 0;
+    let leveledUp = false;
+
+    const xpAlreadyClaimed =
+      user.xpClaimedToday && new Date(user.xpClaimedToday).getTime() === today.getTime();
 
     if (!entry) {
-      // XP logic
-      xpEarned = 10;
-      if (journalText) xpEarned += 5;
-      if (habits.length > 0) xpEarned += habits.length * 2;
-
-      // Coin logic
-      coinsEarned = 5; // base coins
+      // ✅ Coins are always awarded
+      coinsEarned = 5;
       if (journalText) coinsEarned += 2;
-      coinsEarned += habits.length * 4; // +4 per habit
+      coinsEarned += habits.length * 4;
 
-      // Create new entry
-      const newEntry = await Entry.create({
+      // ✅ Only give XP if not claimed today
+      if (!xpAlreadyClaimed) {
+        xpEarned = 10;
+        if (journalText) xpEarned += 5;
+        if (habits.length > 0) xpEarned += habits.length * 2;
+
+        if (user.equippedPet) {
+          const petItem = await StoreItem.findOne({ name: user.equippedPet, type: "pet" });
+          if (petItem?.bonusPercent) {
+            bonusXP = Math.floor(xpEarned * (petItem.bonusPercent / 100));
+          }
+        }
+
+        const totalXP = xpEarned + bonusXP;
+        const previousLevel = user.level;
+        user.xp += totalXP;
+        user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
+        leveledUp = user.level > previousLevel;
+
+        user.xpClaimedToday = today; // ✅ Lock XP for today
+      }
+
+      user.coins = (user.coins || 0) + coinsEarned;
+
+      await Entry.create({
         user: req.user.id,
         date: today,
         mood,
         journalText,
         habits,
-        xpEarned
+        xpEarned: xpEarned + bonusXP
       });
-
-      const user = await User.findById(req.user.id);
-
-      // Pet XP bonus logic
-      let bonusXP = 0;
-      if (user.equippedPet) {
-        const petItem = await StoreItem.findOne({
-          name: user.equippedPet,
-          type: "pet"
-        });
-        if (petItem?.bonusPercent) {
-          bonusXP = Math.floor(xpEarned * (petItem.bonusPercent / 100));
-        }
-      }
-
-      const totalXP = xpEarned + bonusXP;
-      const previousLevel = user.level;
-
-      // Update user XP, level, coins
-      user.xp += totalXP;
-      user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
-      user.coins = (user.coins || 0) + coinsEarned;
-
-      const leveledUp = user.level > previousLevel;
 
       await user.save();
 
@@ -89,7 +87,7 @@ router.post('/', authMiddleware, async (req, res) => {
         newLevel: user.level
       });
     } else {
-      // Update existing entry (no XP/coin re-reward)
+      // Update existing entry, no reward
       entry.mood = mood;
       entry.journalText = journalText;
       entry.habits = habits;
@@ -102,6 +100,7 @@ router.post('/', authMiddleware, async (req, res) => {
     return res.status(500).json({ msg: "Failed to submit entry" });
   }
 });
+
 
 
 router.get('/today',authMiddleware,async (req,res)=>{
@@ -175,32 +174,35 @@ router.get('/stats',authMiddleware,async function (req,res) {
     
 });
 
-
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
-    // First fetch the entry to access its data
     const entry = await Entry.findOne({
       _id: req.params.id,
       user: req.user.id
     });
 
     if (!entry) {
-      return res.status(404).json({
-        msg: "This entry not found or not yours"
-      });
+      return res.status(404).json({ msg: "This entry not found or not yours" });
     }
 
-    const xpTobeDeducted = entry.habits.length * 2 + 15;
+    // Coins to deduct based on original reward logic
+    let coinsToDeduct = 5; // base coins
+    if (entry.journalText) coinsToDeduct += 2;
+    coinsToDeduct += (entry.habits?.length || 0) * 4;
 
-    await Entry.deleteOne({ _id: req.params.id }); 
+    // Delete the entry
+    await Entry.deleteOne({ _id: req.params.id });
 
+    // Deduct coins only (no XP change)
     const user = await User.findById(req.user.id);
-    user.xp = Math.max(0, user.xp - xpTobeDeducted);
-    user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
-
+    user.coins = Math.max(0, (user.coins || 0) - coinsToDeduct);
     await user.save();
 
-    res.json({ msg: "Entry deleted" });
+    res.json({
+      msg: "Entry deleted (coins deducted)",
+      coinsDeducted: coinsToDeduct,
+      newCoinBalance: user.coins
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: "Failed to delete entry" });
