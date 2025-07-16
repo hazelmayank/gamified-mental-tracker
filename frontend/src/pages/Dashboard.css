@@ -1,8 +1,6 @@
-/* Dashboard.css */
-
 .dashboard-container {
   max-width: 900px;
-  margin: 100px auto 40px auto; /* Leave room for fixed navbar */
+  margin: 100px auto 40px auto;
   padding: 20px;
   background-color: #f9fbfd;
   border-radius: 16px;
@@ -19,7 +17,7 @@
 .avatar {
   width: 96px;
   height: 96px;
-  border-radius: 50%; 
+  border-radius: 50%;
   object-fit: cover;
   border: 3px solid #ddd;
   background-color: #fff;
@@ -31,20 +29,24 @@
   color: #2c3e50;
 }
 
-.welcome-section p {
-  margin: 4px 0 12px 0;
+.level-coins {
+  display: flex;
+  gap: 16px;
   font-size: 16px;
   color: #555;
+  font-weight: 500;
+  margin-bottom: 8px;
 }
 
 .xp-bar {
+  position: relative;
   height: 14px;
   background-color: #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
   width: 100%;
   max-width: 240px;
-  margin: 6px 0 10px;
+  margin: 6px 0 16px;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
 
@@ -55,12 +57,14 @@
   transition: width 0.4s ease-in-out;
 }
 
-.xp-text {
+.xp-label {
+  text-align: center;
   font-size: 14px;
-  color: #777;
-  margin-top: -4px;
-  margin-bottom: 12px;
+  font-weight: 600;
+  color: #555;
+  margin-top: 6px;
 }
+
 
 .quick-links {
   display: grid;

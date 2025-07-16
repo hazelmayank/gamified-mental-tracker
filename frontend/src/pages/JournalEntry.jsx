@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import api from "../axios";
 import "./JournalEntry.css";
-import { useToast } from "../context/ToastContext"; // ✅ Import toast
+import { useToast } from "../context/ToastContext";
 
 const moodOptions = ["Happy", "Sad", "Anxious", "Angry", "Calm", "Motivated"];
 const habitOptions = ["Meditation", "Exercise", "Gratitude", "Reading", "Sleep 8+ hrs"];
@@ -11,7 +11,8 @@ export default function JournalEntry() {
   const [journalText, setJournalText] = useState("");
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { showToast } = useToast(); // ✅ Get toast method
+  const [coinAnimation, setCoinAnimation] = useState(null);
+  const { showToast } = useToast();
 
   const handleHabitchange = (habit) => {
     setHabits((prev) =>
@@ -35,7 +36,15 @@ export default function JournalEntry() {
       if (isUpdate) {
         showToast("📝 Today's entry has been updated!", "info");
       } else {
-        showToast(`✅ Entry created! +${res.data.xpEarned} XP earned!`, "success");
+        showToast(`✅ Entry created! +${res.data.xpEarned?res.data.xpEarned:0} XP earned!`, "success");
+
+        if (res.data.coinsEarned) {
+          showToast(`🪙 You earned +${res.data.coinsEarned} coins!`, "success");
+
+          // Trigger animation
+          setCoinAnimation(`+${res.data.coinsEarned} Coins!`);
+          setTimeout(() => setCoinAnimation(null), 2000); // hide after 2s
+        }
 
         if (res.data.bonusXP) {
           showToast(`🐾 Pet Bonus! +${res.data.bonusXP} XP`, "info");
@@ -46,15 +55,12 @@ export default function JournalEntry() {
         }
 
         const res2 = await api.post("/achievements/unlock");
-    if (res2.data.unlocked?.length > 0) {
-  res2.data.unlocked.forEach(name =>
-    showToast(`🏅 New Achievement Unlocked: ${name}`, "success")
-  );
+        if (res2.data.unlocked?.length > 0) {
+          res2.data.unlocked.forEach(name =>
+            showToast(`🏅 New Achievement Unlocked: ${name}`, "success")
+          );
         }
-
       }
-
-
 
       // Clear form
       setMood("");
@@ -62,7 +68,6 @@ export default function JournalEntry() {
       setHabits([]);
 
     } catch (err) {
-      // console.log("Error is " ,err);
       showToast("❌ Error submitting entry", "error");
     } finally {
       setLoading(false);
@@ -72,6 +77,11 @@ export default function JournalEntry() {
   return (
     <div className="journal-entry-page">
       <h2>Daily Journal Entry</h2>
+
+      {coinAnimation && (
+        <div className="coin-badge-animation">{coinAnimation}</div>
+      )}
+
       <form onSubmit={handleSubmit} className="journal-form">
         <label>Mood</label>
         <select value={mood} onChange={(e) => setMood(e.target.value)} required>

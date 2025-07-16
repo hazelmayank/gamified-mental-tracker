@@ -35,7 +35,7 @@ export default function ViewProfile() {
 
         // Ensure pets and other properties are safe
         setFriend({
-          avatarUrl:  `/assets/pets/${data.avatarUrl}` || "/default.png",
+          avatarUrl: (data.avatarUrl ? `/assets/pets/${data.avatarUrl}` : "/aasets/pets/default.png"),
           username: data.username || "Anonymous",
           level: data.level || 1,
           xp: data.xp || 0,
@@ -44,7 +44,7 @@ export default function ViewProfile() {
     ? `/assets/pets/${slugify(data.pet)}.png`
     : null, // fallback image
         });
-//         console.log("Pet value before slugify:", data.pet);
+        // console.log("Pet value before slugify:", data);
 // console.log("Slugified pet path:", `/assets/pets/${slugify(data.pet)}.png`);
         // console.log(data.pet);
         // console.log(data);

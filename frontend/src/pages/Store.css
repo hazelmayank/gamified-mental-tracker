@@ -1,13 +1,46 @@
 .store {
   text-align: center;
   padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.store h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.store p {
+  font-size: 1rem;
+  color: #444;
+}
+
+.store-section-heading {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #eee;
+  display: inline-block;
+  padding-bottom: 6px;
+  margin-bottom: 1rem;
 }
 
 .store-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 960px) {
+  .store-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .store-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .store-item {
