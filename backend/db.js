@@ -49,6 +49,15 @@ const userSchema = new mongoose.Schema({
     },
   ],
 
+  xpClaimedToday: {
+    type: Date,
+    default: null,
+  },
+  coins: {
+    type: Number,
+    default: 0,
+  },
+
   dailyQuests: [
     {
       text: String,
@@ -61,16 +70,15 @@ const userSchema = new mongoose.Schema({
     default: new Date(0), // default to old date
   },
   streak: {
-  type: Number,
-  default: 0,
-},
-lastActive: {
-  type: Date,
-  default: null,
-},
-journalStreak: { type: Number, default: 0 },
-lastJournalDate: { type: Date, default: null }
-
+    type: Number,
+    default: 0,
+  },
+  lastActive: {
+    type: Date,
+    default: null,
+  },
+  journalStreak: { type: Number, default: 0 },
+  lastJournalDate: { type: Date, default: null },
 });
 
 const entrySchema = new mongoose.Schema({

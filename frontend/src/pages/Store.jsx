@@ -4,7 +4,7 @@ import './Store.css';
 
 export default function Store() {
   const [items, setItems] = useState([]);
-  const [xp, setXP] = useState(0);
+  const [coins, setCoins] = useState(0);
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function Store() {
       setItems(itemsRes.data.allItems || []);
       
       const userRes = await axios.get('/user/me');
-      setXP(userRes.data.user.xp);
+      setCoins(userRes.data.user.coins);
       setInventory(userRes.data.user.inventory || []);
     }
     fetchData();
@@ -23,26 +23,23 @@ export default function Store() {
     try {
       const res = await axios.post('/user/spend', { itemName });
       alert(res.data.msg);
-      setXP(res.data.xp);
+      setCoins(res.data.coins);
       setInventory(res.data.inventory);
     } catch (err) {
-      alert(err.response.data.msg || 'Failed to purchase');
+      alert(err.response?.data?.msg || 'Failed to purchase');
     }
   };
 
-  return (
-    <div className="store">
-      <h2>🛒 Mental Health Store</h2>
-      <p>Your XP: <strong>{xp}</strong></p>
-
+  const renderSection = (title, filteredItems) => (
+    <>
+      <h3 className="store-section-heading">{title}</h3>
       <div className="store-grid">
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <div key={item.name} className="store-item">
             <img src={`/assets/pets/${item.image}`} alt={item.name} />
-
             <h4>{item.name}</h4>
             <p>Type: {item.type}</p>
-            <p>Cost: {item.cost} XP</p>
+            <p>Cost: {item.cost} Coins</p>
             {inventory.includes(item.name) ? (
               <span className="owned">✅ Owned</span>
             ) : (
@@ -51,6 +48,21 @@ export default function Store() {
           </div>
         ))}
       </div>
+    </>
+  );
+
+  const pets = items.filter((i) => i.name.endsWith('Pet'));
+  const themes = items.filter((i) => i.name.endsWith('Theme'));
+  const avatars = items.filter((i) => i.name.endsWith('Avatar'));
+
+  return (
+    <div className="store">
+      <h2>🛒 Mental Health Store</h2>
+      <p>Your Coins: <strong>{coins}</strong></p>
+
+      {renderSection("🐾 Pets", pets)}
+      {renderSection("🎨 Themes", themes)}
+      {renderSection("🧑 Avatars", avatars)}
     </div>
   );
 }

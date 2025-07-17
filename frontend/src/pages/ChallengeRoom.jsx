@@ -2,15 +2,14 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../axios";
 import "./ChallengeRoom.css";
-import { useToast } from "../context/ToastContext"; 
+import { useToast } from "../context/ToastContext";
 
 export default function ChallengeRoom() {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
-  const [lastXPGained, setLastXPGained] = useState(0);
-
-  const [showXP, setShowXP] = useState(false);
-  const { showToast } = useToast(); 
+  const [lastCoinsGained, setLastCoinsGained] = useState(0);
+  const [showCoins, setShowCoins] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     axios
@@ -26,29 +25,25 @@ export default function ChallengeRoom() {
 
     try {
       const res = await axios.post(`/challenges/submit/${id}`, { text });
-      const { xpGained = 10, bonusXP = 0, newLevel, leveledUp } = res.data;
+      const { coinsGained = 10, bonusCoins = 0 } = res.data;
 
-      const baseXP = xpGained - bonusXP;
+      const baseCoins = coinsGained - bonusCoins;
 
       showToast(
-        `Challenge Submitted! +${xpGained} XP (${baseXP} base + ${bonusXP} bonus 🐾)`,
+        `Challenge Submitted! +${coinsGained} Coins (${baseCoins} base )`,
         "success"
       );
 
-      if (leveledUp) {
-        showToast(`🎉 Level Up! You're now Level ${newLevel}!`, "success");
+      const res2 = await axios.post("/achievements/unlock");
+      if (res2.data.unlocked?.length > 0) {
+        res2.data.unlocked.forEach((name) =>
+          showToast(`🏅 New Achievement Unlocked: ${name}`, "success")
+        );
       }
 
-      const res2 = await axios.post("/achievements/unlock");
-        if (res2.data.unlocked?.length > 0) {
-      res2.data.unlocked.forEach(name =>
-    showToast(`🏅 New Achievement Unlocked: ${name}`, "success")
-  );
-}
-
-      setLastXPGained(xpGained);
-      setShowXP(true);
-      setTimeout(() => setShowXP(false), 1500);
+      setLastCoinsGained(coinsGained);
+      setShowCoins(true);
+      setTimeout(() => setShowCoins(false), 1500);
 
       setChallenge((prev) => ({
         ...prev,
@@ -76,8 +71,7 @@ export default function ChallengeRoom() {
       <h2>{challenge.name}</h2>
       <p>{challenge.description}</p>
       <p>
-        <strong>Created by:</strong>{" "}
-        {challenge.creator?.username || "Unknown"}
+        <strong>Created by:</strong> {challenge.creator?.username || "Unknown"}
       </p>
       <p>
         <strong>Participants:</strong> {challenge.participants.length}
@@ -90,9 +84,7 @@ export default function ChallengeRoom() {
           placeholder="Write your progress..."
         ></textarea>
         <button type="submit">Submit Progress</button>
-        {showXP && <div className="xp-popup">+{lastXPGained} XP 🧠</div>}
-
-
+        {showCoins && <div className="coins-popup">+{lastCoinsGained} 🪙 Coins</div>}
       </form>
 
       {challenge.submissions.length > 0 && (

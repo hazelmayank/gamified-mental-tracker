@@ -11,6 +11,7 @@ const moodOptions = [
   { label: "Calm", emoji: "😌" },
   { label: "Motivated", emoji: "💪" },
 ];
+
 const moodThemes = {
   Happy: { bg: "#fff8dc", border: "#ffeb3b" },
   Sad: { bg: "#e3f2fd", border: "#2196f3" },
@@ -33,12 +34,13 @@ export default function JournalEntry() {
   const [journalText, setJournalText] = useState("");
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { showToast } = useToast();
-
   const [wordCount, setWordCount] = useState(0);
   const [quote, setQuote] = useState("");
   const [user, setUser] = useState(null);
+  const [coinAnimation, setCoinAnimation] = useState(null);
+  const { showToast } = useToast();
 
+  // Random quote for motivation
   useEffect(() => {
     const quotes = [
       "Progress, not perfection.",
@@ -49,6 +51,7 @@ export default function JournalEntry() {
     setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
   }, []);
 
+  // Restore draft
   useEffect(() => {
     const draft = JSON.parse(localStorage.getItem("journal-draft"));
     if (draft) {
@@ -58,6 +61,7 @@ export default function JournalEntry() {
     }
   }, []);
 
+  // Save draft to localStorage
   useEffect(() => {
     localStorage.setItem(
       "journal-draft",
@@ -79,18 +83,24 @@ export default function JournalEntry() {
       const res = await api.post("/entries", { mood, journalText, habits });
       const isUpdate = res.data.msg === "Entry updated";
       setUser(res.data.user);
+
       if (isUpdate) {
         showToast("📝 Today's entry updated!", "info");
       } else {
-        showToast(`✅ Entry created! +${res.data.xpEarned} XP`, "success");
+        showToast(`✅ Entry created! +${res.data.xpEarned || 0} XP`, "success");
+
+        if (res.data.coinsEarned) {
+          showToast(`🪙 You earned +${res.data.coinsEarned} coins!`, "success");
+          setCoinAnimation(`+${res.data.coinsEarned} Coins!`);
+          setTimeout(() => setCoinAnimation(null), 2000);
+        }
+
         if (res.data.bonusXP) {
           showToast(`🐾 Pet Bonus! +${res.data.bonusXP} XP`, "info");
         }
+
         if (res.data.leveledUp) {
-          showToast(
-            `🎉 Level Up! You're now Level ${res.data.newLevel}!`,
-            "success"
-          );
+          showToast(`🎉 Level Up! You're now Level ${res.data.newLevel}!`, "success");
         }
 
         const res2 = await api.post("/achievements/unlock");
@@ -101,7 +111,7 @@ export default function JournalEntry() {
         }
       }
 
-      // Reset form
+      // Clear form
       setMood("");
       setJournalText("");
       setHabits([]);
@@ -127,9 +137,11 @@ export default function JournalEntry() {
       <p className="quote">✨ {quote}</p>
 
       {user && (
-        <p className="streak-badge" style={{ paddintop: "-10px" }}>
-          🔥 {user.journalStreak}-Day Streak
-        </p>
+        <p className="streak-badge">🔥 {user.journalStreak}-Day Streak</p>
+      )}
+
+      {coinAnimation && (
+        <div className="coin-badge-animation">{coinAnimation}</div>
       )}
 
       <form onSubmit={handleSubmit} className="journal-form">

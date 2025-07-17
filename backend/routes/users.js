@@ -127,19 +127,19 @@ try {
 }
 
 
-  if (user.xp < storeItem.cost) {
+  if (user.coins < storeItem.cost) {
     await session.abortTransaction();
-    return res.status(400).json({ msg: "Not enough XP" });
+    return res.status(400).json({ msg: "Not enough Coins" });
   }
 
-  user.xp -= storeItem.cost;
+  user.coins -= storeItem.cost;
   user.inventory.push(itemName);
   await user.save({ session });
 
   await session.commitTransaction();
   session.endSession();
 
-  res.json({ msg: "Item purchased", xp: user.xp, inventory: user.inventory });
+  res.json({ msg: "Item purchased", coins: user.coins, inventory: user.inventory });
 } catch (err) {
   await session.abortTransaction();
   session.endSession();
