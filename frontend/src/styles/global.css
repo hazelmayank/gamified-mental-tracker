@@ -1,3 +1,18 @@
+/* ==== GLOBAL RESETS AND BASE STYLES ==== */
+:root {
+  --primary: #6C63FF;
+  --accent: #FFD166;
+  --bg-light: #F7F9FB;
+  --bg-dark: #1F2937;
+  --text-dark: #2D2D2D;
+  --text-light: #f3f4f6;
+  --success: #7AE582;
+  --danger: #FF6B6B;
+  --font: 'Poppins', sans-serif;
+  --radius: 16px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,30 +20,8 @@
 }
 
 body {
-  margin: 0;
-  padding:60px 0;
-  font-family: 'Segoe UI', 'Roboto', sans-serif;
-  background-color: #f6f9fc;
-  color: #333;
-}
-
-
-a {
-  text-decoration: none;
-  color: #4a90e2;
-}
-
-
-button {
-  font-family: inherit;
-  border: none;
-  padding: 10px 20px;
-  background-color: #4a90e2;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #3d7ecb;
+  padding-top:50px;
+  font-family: var(--font);
+  background-color: var(--bg-light);
+  color: var(--text-dark);
 }

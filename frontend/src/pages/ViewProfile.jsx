@@ -62,7 +62,8 @@ export default function ViewProfile() {
   return (
     <div className="profile-container">
       <div className="profile-card">
-        <img src={friend.avatarUrl} alt={friend.username} className="avatar" />
+      <img src={friend.avatarUrl} alt={friend.username} className="avatar" />
+
         <h2 className="username">{friend.username}</h2>
         <p className="level">
           Level {friend.level} • XP: {friend.xp}

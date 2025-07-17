@@ -1,141 +1,170 @@
-const mongoose=require("mongoose");
-mongoose.connect("mongodb+srv://mayankjeefinal:Mayank%406696@mayankfirstdb.vva4taq.mongodb.net/gamified-mental-tracker");
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://mayankjeefinal:Mayank%406696@mayankfirstdb.vva4taq.mongodb.net/gamified-mental-tracker"
+);
 
-const userSchema=new mongoose.Schema({
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  xp: {
+    type: Number,
+    default: 0,
+  },
+  level: {
+    type: Number,
+    default: 1,
+  },
+  avatar: {
+    type: String,
+    default: "default.png",
+  },
+  theme: {
+    type: String,
+    default: "light",
+  },
+  inventory: [String],
+  equippedPet: { type: String, default: null },
 
-    username:{
-        type:String,
-        required:true,
-        unique:true,
-        lowercase:true,
-       
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }],
+  challengeProgress: [
+    {
+      challengeId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChallengeRoom",
+      },
+      date: { type: Date, required: true },
     },
-    email:{
-        type:String,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    },
-    xp:{
-        type:Number,
-        default:0
-    },
-    level:{
-        type:Number,
-        default:1
-    },
-    avatar:{
-        type:String,
-        default:"default.png"
-    },
-    theme:{
-        type:String,
-        default:"light"
-    },
-    inventory:[String],
-    equippedPet: { type: String, default: null },
+  ],
 
-    friends:[
-        {type:mongoose.Schema.Types.ObjectId,
-            ref:'User'
-        }],
-        achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }],
-        challengeProgress:[{
-            challengeId:{
-                type:mongoose.Schema.Types.ObjectId,
-                ref:'ChallengeRoom'},
-                date:{type:Date,required:true}
-                
-        }]
-    
-});
-
-
-const entrySchema=new mongoose.Schema({
-    user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:true
+  dailyQuests: [
+    {
+      text: String,
+      completed: { type: Boolean, default: false },
     },
-    date:{
-        type:Date,
-        required:true
-    },
-    mood:{
-        type:String,
-        required:true
-    },
-    journalText:{
-        type:String,
+  ],
 
-    },
-    habits:[String],
-    xpEarned:{
-        type:Number,
-        default:0
-    }
-
-  
-});
-  entrySchema.index({user:1,date:1},{unique:true}) 
-
-const challengeRoomschema=new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    },
-    isPrivate:{type:Boolean, default:false,required:true},
-    creator:{type:mongoose.Schema.Types.ObjectId,ref:"User",
-        
-        required:true},
-    participants:[{type:mongoose.Schema.Types.ObjectId,ref:"User"}],
-    submissions: [{
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    text: String,
-    submittedAt: { type: Date, default: Date.now }
-  }]
+  questLastReset: {
+    type: Date,
+    default: new Date(0), // default to old date
+  },
+  streak: {
+  type: Number,
+  default: 0,
+},
+lastActive: {
+  type: Date,
+  default: null,
+},
+journalStreak: { type: Number, default: 0 },
+lastJournalDate: { type: Date, default: null }
 
 });
 
-const itemsBought=new mongoose.Schema({
-    name:{type:String,required:true},
-    type:{type:String,enum: ["avatar", "theme", "pet"],required:true},
-    cost:{type:Number,required:true},
-    image:{type:String,required:true},
-    bonusPercent: { type: Number, default: 0 }
-})
+const entrySchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+  mood: {
+    type: String,
+    required: true,
+  },
+  journalText: {
+    type: String,
+  },
+  habits: [String],
+  xpEarned: {
+    type: Number,
+    default: 0,
+  },
+});
+entrySchema.index({ user: 1, date: 1 }, { unique: true });
 
-const badgeModel=new mongoose.Schema({
-    name:{type:String,},
+const challengeRoomschema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  isPrivate: { type: Boolean, default: false, required: true },
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+
+    required: true,
+  },
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  submissions: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      text: String,
+      submittedAt: { type: Date, default: Date.now },
+    },
+  ],
+});
+
+const itemsBought = new mongoose.Schema({
+  name: { type: String, required: true },
+  type: { type: String, enum: ["avatar", "theme", "pet"], required: true },
+  cost: { type: Number, required: true },
+  image: { type: String, required: true },
+  bonusPercent: { type: Number, default: 0 },
+});
+
+const badgeModel = new mongoose.Schema({
+  name: { type: String },
   criteria: {
     type: {
       type: String,
       enum: ["xp", "level", "entries"],
-      required: true
+      required: true,
     },
     condition: {
-      type: String, 
-      enum: ["gte", "eq", "lt"], 
-      required: true
+      type: String,
+      enum: ["gte", "eq", "lt"],
+      required: true,
     },
     value: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
 
-    description:{type:String,require:true},
-    icon:{type:String,default:"default.png"}
-})
+  description: { type: String, require: true },
+  icon: { type: String, default: "default.png" },
+});
 
-const friendRequestSchema=new mongoose.Schema({
-    fromUser:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
-    toUser:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
-    status:{type:String,enum:["pending",'accepted',"rejected"],default:"pending"},
-    createdAt:{type:Date,default:Date.now}
-})
+const friendRequestSchema = new mongoose.Schema({
+  fromUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  toUser: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "rejected"],
+    default: "pending",
+  },
+  createdAt: { type: Date, default: Date.now },
+});
 
 const User = mongoose.model("User", userSchema);
 const Entry = mongoose.model("Entry", entrySchema);
@@ -150,5 +179,5 @@ module.exports = {
   ChallengeRoom,
   StoreItem,
   Achievement,
-  FriendRequest
+  FriendRequest,
 };

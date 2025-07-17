@@ -1,68 +1,137 @@
 .journal-entry-page {
-  max-width: 600px;
+  max-width: 640px;
   margin: 80px auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 2rem 2.5rem;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
   font-family: 'Segoe UI', sans-serif;
+  color: #1f2937;
 }
 
+.journal-entry-page h2 {
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.journal-entry-page .quote {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+/* Section Label */
 .journal-form label {
   display: block;
-  margin: 1rem 0 0.25rem;
+  margin-bottom: 0.4rem;
   font-weight: 600;
-  color: #2b4f81;
-}
-
-select,
-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
   font-size: 1rem;
-  margin-bottom: 1rem;
-  background-color: #f9f9f9;
+  color: #374151;
 }
 
-textarea {
-  min-height: 120px;
-  resize: vertical;
+/* Mood Buttons */
+.mood-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1.75rem;
 }
 
+.mood-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: #f3f4f6;
+  font-size: 0.95rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mood-btn:hover {
+  background-color: #e0f2fe;
+}
+
+.mood-btn.selected {
+  background-color: #e0f2fe;
+  border-color: #60a5fa;
+  font-weight: 600;
+}
+
+/* Habits */
 .habits-options {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.habits-options label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: #e6f2ff;
-  font-size: 0.95rem;
-  cursor: pointer;
-  user-select: none;
-}
-
-button[type="submit"] {
-  width: 100%;
-  background-color: #2b4f81;
-  color: #fff;
-  padding: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
+.habit-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.9rem;
   border: none;
-  border-radius: 8px;
+  background-color: #e0f7fa;
+  color: #047857;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
+.habit-chip.active {
+  background-color: #c7d2fe;
+  font-weight: 600;
+}
+
+/* Journal Textarea */
+textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  resize: vertical;
+  background-color: #f9fafb;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.word-count {
+  text-align: right;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+/* Submit Button */
+button[type="submit"] {
+  width: 100%;
+  background-color: #2563eb;
+  color: #fff;
+  padding: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
 button[type="submit"]:hover {
-  background-color: #1f3b63;
+  background-color: #1e40af;
+}
+.streak-badge {
+  margin-top: -10px;
+  font-weight: bold;
+  font-size: 1rem;
 }

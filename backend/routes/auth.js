@@ -15,19 +15,11 @@ const signupSchema = zod.object({
     .max(20, "Username must be at most 20 characters")
     .toLowerCase()
     .trim(),
-  email: zod
-    .string()
-    .email("Invalid email address")
-    .toLowerCase()
-    .trim(),
-  password: zod
-    .string()
-    .min(6, "Password must be at least 6 characters")
+  email: zod.string().email("Invalid email address").toLowerCase().trim(),
+  password: zod.string().min(6, "Password must be at least 6 characters"),
 });
 
 router.post("/signup", async function (req, res) {
-
-  
   const result = signupSchema.safeParse(req.body);
 
   if (!result.success) {
@@ -54,6 +46,12 @@ router.post("/signup", async function (req, res) {
       username,
       email,
       password: hashedPassword,
+      dailyQuests: [
+        { text: "Write your journal entry", completed: false },
+        { text: "Log habits", completed: false },
+        { text: "Interact with a friend", completed: false },
+      ],
+      questLastReset: new Date(),
     });
 
     const token = jwt.sign(
@@ -76,63 +74,58 @@ router.post("/signup", async function (req, res) {
   }
 });
 
-const signinSchema=zod.object({
-    username: zod
+const signinSchema = zod.object({
+  username: zod
     .string()
     .min(3, "Username must be at least 3 characters")
     .max(20, "Username must be at most 20 characters")
     .toLowerCase()
     .trim(),
 
-     password: zod
-    .string()
-    .min(6, "Password must be at least 6 characters")
-})
+  password: zod.string().min(6, "Password must be at least 6 characters"),
+});
 
-router.post('/signin',async function(req,res){
-    const response=signinSchema.safeParse(req.body);
+router.post("/signin", async function (req, res) {
+  const response = signinSchema.safeParse(req.body);
 
-    if(!response.success){
-        return res.status(411).json({
-            msg:"Invalid input data"
-        })
+  if (!response.success) {
+    return res.status(411).json({
+      msg: "Invalid input data",
+    });
+  }
+
+  const { username, password } = response.data;
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({
+        msg: "No such user is found",
+      });
     }
 
-    const {username ,password}= response.data;
-    try{
-
-        const user=await User.findOne({username});
-
-        if(!user){
-            return res.status(401).json({
-                msg:"No such user is found"
-            })
-        }
-
-        const isPassword=await bcrypt.compare(password,user.password);
-        if(!isPassword){
-            return res.status(401).json({
-                msg:"Incorrect password"
-            })
-        }
-
-        const token=jwt.sign({id:user._id,username:username},JWT_SECRET,{expiresIn:"1h"});
-
-        return res.status(200).json({
-            msg:"Sign-in successfull !",
-            token:token
-        })
-
+    const isPassword = await bcrypt.compare(password, user.password);
+    if (!isPassword) {
+      return res.status(401).json({
+        msg: "Incorrect password",
+      });
     }
-    catch(err){
 
-       console.error("Signin error:", err.message);
+    const token = jwt.sign({ id: user._id, username: username }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    return res.status(200).json({
+      msg: "Sign-in successfull !",
+      token: token,
+    });
+  } catch (err) {
+    console.error("Signin error:", err.message);
     res.status(500).json({
-      msg: "Internal server error"
-
-    })}
-
-})
+      msg: "Internal server error",
+    });
+  }
+});
 
 module.exports = router;
 

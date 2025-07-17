@@ -7,16 +7,7 @@ export default function Toast({ message, type = 'info', onClose }) {
     return () => clearTimeout(timer);
   }, [onClose]);
 
-  useEffect(() => {
-    const soundMap = {
-      success: '/sounds/success.mp3',
-      error: '/sounds/error.mp3',
-      info: '/sounds/info.mp3',
-    };
-    const audio = new Audio(soundMap[type] || soundMap.info);
-    audio.volume = 0.5;
-    audio.play();
-  }, [type]);
+  
 
   return (
     <div className={`toast toast-${type}`}>

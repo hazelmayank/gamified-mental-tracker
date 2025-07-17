@@ -1,0 +1,9 @@
+:root {
+  --primary: #6C63FF;
+  --accent: #FFD166;
+  --bg-light: #F7F9FB;
+  --text-dark: #2D2D2D;
+  --success: #7AE582;
+  --danger: #FF6B6B;
+  --font: 'Poppins', sans-serif;
+}
