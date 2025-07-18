@@ -66,11 +66,11 @@ npm install
 
 ### 3. Setup Environment Variables
 
-Create a `.env` file in the `server/` directory:
+Create a `.env` file in the `backend/` directory:
 
 ```env
 PORT=3000
-MONGO_URI="mongodb+srv://mayankjeefinal:Mayank%406696@mayankfirstdb.vva4taq.mongodb.net/gamified-mental-tracker"
+MONGO_URL="mongodb+srv://mayankjeefinal:Mayank%406696@mayankfirstdb.vva4taq.mongodb.net/gamified-mental-tracker"
 JWT_SECRET="123456"
 ```
 
@@ -78,11 +78,11 @@ JWT_SECRET="123456"
 
 ```bash
 # Backend
-cd server
+cd backend
 npm run dev
 
 # Frontend
-cd ../client
+cd ../frontend
 npm start
 ```
 
