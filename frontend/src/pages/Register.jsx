@@ -3,7 +3,7 @@ import './Register.css'
 import axios from '../axios'
 import {useNavigate} from 'react-router-dom'
 import { useState } from 'react'
-
+import '../styles/global.css';
 const Register = () => {
 const [loading, setLoading] = useState(false);
 const [form,setForm]=useState({
