@@ -35,7 +35,8 @@ router.post("/", authMiddleware, async (req, res) => {
     let leveledUp = false;
 
     const xpAlreadyClaimed =
-      user.xpClaimedToday && new Date(user.xpClaimedToday).getTime() === today.getTime();
+      user.xpClaimedToday &&
+      new Date(user.xpClaimedToday).getTime() === today.getTime();
 
     if (!entry) {
       // Coin logic
@@ -50,7 +51,10 @@ router.post("/", authMiddleware, async (req, res) => {
         if (habits.length > 0) xpEarned += habits.length * 2;
 
         if (user.equippedPet) {
-          const petItem = await StoreItem.findOne({ name: user.equippedPet, type: "pet" });
+          const petItem = await StoreItem.findOne({
+            name: user.equippedPet,
+            type: "pet",
+          });
           if (petItem?.bonusPercent) {
             bonusXP = Math.floor(xpEarned * (petItem.bonusPercent / 100));
           }
@@ -80,10 +84,13 @@ router.post("/", authMiddleware, async (req, res) => {
       yesterday.setDate(today.getDate() - 1);
       if (
         !user.lastJournalDate ||
-        new Date(user.lastJournalDate).toDateString() === yesterday.toDateString()
+        new Date(user.lastJournalDate).toDateString() ===
+          yesterday.toDateString()
       ) {
         user.journalStreak += 1;
-      } else if (new Date(user.lastJournalDate).toDateString() !== today.toDateString()) {
+      } else if (
+        new Date(user.lastJournalDate).toDateString() !== today.toDateString()
+      ) {
         user.journalStreak = 1;
       }
       user.lastJournalDate = today;
