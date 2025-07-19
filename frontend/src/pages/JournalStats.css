@@ -26,6 +26,7 @@
   font-size: 1.25rem;
   color: #333;
 }
+
 /* ==== Calendar Heatmap Styling ==== */
 .react-calendar-heatmap {
   margin-top: 12px;
@@ -33,6 +34,7 @@
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  overflow-x: auto;
 }
 
 .react-calendar-heatmap text {
@@ -70,4 +72,37 @@
 .react-calendar-heatmap rect:hover {
   stroke: #333;
   stroke-width: 1;
+}
+
+/* 🌐 Responsive Enhancements */
+@media (max-width: 600px) {
+  .journal-stats-page {
+    padding: 16px;
+    margin: 20px 12px;
+  }
+
+  .trend-title {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+
+  .chart-section {
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+  }
+
+  .chart-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .react-calendar-heatmap {
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .react-calendar-heatmap text {
+    font-size: 8px;
+  }
 }
