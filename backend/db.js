@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://mayankjeefinal:Mayank%406696@mayankfirstdb.vva4taq.mongodb.net/gamified-mental-tracker"
-);
+const {MONGO_URI}=require("./config.js")
+mongoose.connect(MONGO_URI);
 
 const userSchema = new mongoose.Schema({
   username: {

@@ -8,5 +8,6 @@ frontend/dist/
 backend/dist/
 
 # Environment files
+backend/.env
 .env
 .env.*
