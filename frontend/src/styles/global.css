@@ -41,3 +41,111 @@ button {
 button:hover {
   background-color: #1e40af; /* darker blue on hover */
 }
+
+/* ======= RESPONSIVE STYLES ======= */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .dashboard-container {
+    margin: 60px 16px 32px;
+    padding: 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .avatar-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .welcome-section h2 {
+    font-size: 22px;
+  }
+
+  .level-coins {
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+
+  .xp-bar-tooltip-wrapper {
+    max-width: 100%;
+  }
+
+  .streak-badge {
+    margin-top: 12px;
+  }
+
+  .stats-hud {
+    justify-content: center;
+    font-size: 14px;
+    flex-wrap: wrap;
+  }
+
+  .quick-links {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+  .dashboard-container {
+    margin: 40px 12px 24px;
+    padding: 12px;
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .welcome-section h2 {
+    font-size: 20px;
+  }
+
+  .level-coins {
+    font-size: 13px;
+  }
+
+  .xp-text {
+    font-size: 13px;
+  }
+
+  .streak-badge {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+
+  .section h3 {
+    font-size: 18px;
+  }
+
+  .daily-quests li {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .card {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .pet-in-card {
+    width: 64px;
+    height: 64px;
+  }
+
+  .stats-hud span {
+    padding: 4px 10px;
+    font-size: 13px;
+  }
+}
