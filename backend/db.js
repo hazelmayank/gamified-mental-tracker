@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {MONGO_URI}=require("./config.js")
+const { MONGO_URI } = require("./config.js");
 mongoose.connect(MONGO_URI);
 
 const userSchema = new mongoose.Schema({
@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema({
 
   questLastReset: {
     type: Date,
-    default: new Date(0), // default to old date
+    default: new Date(0),
   },
   streak: {
     type: Number,
@@ -78,6 +78,18 @@ const userSchema = new mongoose.Schema({
   },
   journalStreak: { type: Number, default: 0 },
   lastJournalDate: { type: Date, default: null },
+  mentalTestHistory: [
+    {
+      date: {
+        type: String,
+        required: true,
+      },
+      score: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 });
 
 const entrySchema = new mongoose.Schema({

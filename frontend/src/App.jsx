@@ -26,6 +26,7 @@ import HomeLanding from './pages/HomeLanding'
 import Footer from "./components/Footer";
 import MyPets from './pages/MyPets'
 import Logout from "./pages/Logout"; // adjust path if needed
+import MentalHealthTest from './pages/MentalHealthTest'
 
 
 
@@ -38,6 +39,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<HomeLanding />}></Route>
+         <Route path='/mental-health-test' element={<MentalHealthTest />}></Route>
         <Route path='/register' element={<Register />}></Route>
         <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>}></Route>
         {/* <Route path='*' element={<NotFound />} /> */}
