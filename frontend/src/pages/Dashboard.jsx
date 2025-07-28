@@ -71,7 +71,7 @@ const Dashboard = () => {
       <div className="dashboard-header">
         <div className="avatar-section">
           <img
-            src={`/${user.avatar || "default.png"}`}
+           src={`/assets/avatars/${slugify(user.avatar)}.png`}
             onError={(e) => (e.target.style.display = "none")}
             className="avatar"
             alt="avatar"

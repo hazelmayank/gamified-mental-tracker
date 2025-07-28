@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
   },
   inventory: [String],
   equippedPet: { type: String, default: null },
+  
 
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }],

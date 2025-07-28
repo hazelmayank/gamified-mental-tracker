@@ -39,7 +39,7 @@ router.put('/me/update',authMiddleware,async function(req,res){
     if (!parsedData.success) {
     return res.status(400).json({
       msg: "Invalid input",
-      errors: parsed.error.errors
+      errors: parsedData.error.errors
     });
   }
     const {username,avatar,theme}=parsedData.data;
