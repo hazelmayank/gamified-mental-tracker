@@ -139,6 +139,7 @@ const Dashboard = () => {
           <Link to="/leaderboard" className="card">🏆 Leaderboard</Link>
           <Link to="/store" className="card">🛍️ Store</Link>
           <Link to="/friends" className="card">🫂 Friends</Link>
+          <Link to="/tranquil_zone" className="card">🧘‍♂️Tranquil Zone</Link>
         </div>
       </div>
 
