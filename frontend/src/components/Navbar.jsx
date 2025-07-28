@@ -34,7 +34,7 @@ export default function Navbar() {
         <li><Link to="/friends" onClick={closeMenu}>Friends</Link></li>
         <li><Link to="/login" onClick={closeMenu}>Login</Link></li>
         <li><Link to="/register" onClick={closeMenu}>Register</Link></li>
-        <li><Link to="/mypets" onClick={closeMenu}>Pets</Link></li>
+        <li><Link to="/mypets" onClick={closeMenu}>Inventory</Link></li>
         <li><Link to="/logout" onClick={closeMenu}>Logout</Link></li>
       </ul>
     </nav>
