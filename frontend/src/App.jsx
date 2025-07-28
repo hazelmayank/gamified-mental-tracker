@@ -26,6 +26,7 @@ import HomeLanding from './pages/HomeLanding'
 import Footer from "./components/Footer";
 import MyPets from './pages/MyPets'
 import Logout from "./pages/Logout"; // adjust path if needed
+import Tranquil_Zone from './pages/Tranquil_Zone'
 import MentalHealthTest from './pages/MentalHealthTest'
 
 
@@ -60,7 +61,7 @@ function App() {
         <Route path='/login' element={<Login />} />
     <Route path="/mypets" element={<MyPets />} />
      <Route path="/logout" element={<Logout />} />
-     
+     <Route path="/tranquil_zone" element={<Tranquil_Zone></Tranquil_Zone>}></Route>
 <Route path="/view-profile" element={<ViewProfile></ViewProfile>}></Route>
       </Routes>
       {/* <Footer /> */}

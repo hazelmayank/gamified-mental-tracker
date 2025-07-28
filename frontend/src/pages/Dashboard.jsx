@@ -134,37 +134,20 @@ const Dashboard = () => {
       <div className="section">
         <h3>🎯 Quick Actions</h3>
         <div className="quick-links">
-          <Link to="/journal" className="card">
-            📔 New Journal
-          </Link>
-          <Link to="/today-entry" className="card">
-            🗓️ Today’s Entry
-          </Link>
-          <Link to="/journal-stats" className="card">
-            📈 Entry Stats
-          </Link>
-          <Link to="/entries" className="card">
-            🧾 All Entries
-          </Link>
-          <Link to="/my-challenges" className="card">
-            🔥 My Challenge
-          </Link>
-          <Link to="/challenges" className="card">
-            🌟 Join Challenge
-          </Link>
-          <Link to="/mental-health-test" className="card">
-            {" "}
-            🧠 Mental Health Test
-          </Link>
-          <Link to="/leaderboard" className="card">
-            🏆 Leaderboard
-          </Link>
-          <Link to="/store" className="card">
-            🛍️ Store
-          </Link>
-          <Link to="/friends" className="card">
-            🫂 Friends
-          </Link>
+<div className="quick-links">
+  <Link to="/journal" className="card">📔 New Journal</Link>
+  <Link to="/today-entry" className="card">🗓️ Today’s Entry</Link>
+  <Link to="/journal-stats" className="card">📈 Entry Stats</Link>
+  <Link to="/entries" className="card">🧾 All Entries</Link>
+  <Link to="/my-challenges" className="card">🔥 My Challenge</Link>
+  <Link to="/challenges" className="card">🌟 Join Challenge</Link>
+  <Link to="/mental-health-test" className="card">🧠 Mental Health Test</Link>
+  <Link to="/leaderboard" className="card">🏆 Leaderboard</Link>
+  <Link to="/store" className="card">🛍️ Store</Link>
+  <Link to="/friends" className="card">🫂 Friends</Link>
+  <Link to="/tranquil_zone" className="card">🧘‍♂️ Tranquil Zone</Link>
+</div>
+
         </div>
       </div>
 
