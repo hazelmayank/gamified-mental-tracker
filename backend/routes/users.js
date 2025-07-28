@@ -3,7 +3,8 @@ const mongoose=require("mongoose");
 const { authMiddleware } = require("../middleware");
 const zod=require("zod");
 const router=express.Router();
-const {User, StoreItem}= require("../db")
+const {User, StoreItem}= require("../db");
+const dayjs = require("dayjs");
 
 const updateUserSchema = zod.object({
   username: zod.string().min(3).max(20).optional(),
@@ -38,7 +39,7 @@ router.put('/me/update',authMiddleware,async function(req,res){
     if (!parsedData.success) {
     return res.status(400).json({
       msg: "Invalid input",
-      errors: parsed.error.errors
+      errors: parsedData.error.errors
     });
   }
     const {username,avatar,theme}=parsedData.data;
@@ -59,6 +60,81 @@ router.put('/me/update',authMiddleware,async function(req,res){
 
     
 });
+
+
+router.post("/submit-test", authMiddleware, async (req, res) => {
+  const userId = req.user.id;
+  const { score } = req.body;
+
+  if (typeof score !== "number" || score < 0 || score > 100) {
+    return res.status(400).json({ error: "Invalid score" });
+  }
+
+  const today = dayjs().startOf("day").toDate();
+
+  try {
+    const user = await User.findById(userId);
+
+    const alreadySubmitted = user.mentalTestHistory?.some(
+      (entry) => new Date(entry.date).getTime() === today.getTime()
+    );
+
+    if (alreadySubmitted) {
+      return res.status(400).json({ error: "Test already submitted today" });
+    }
+
+    // --- XP & Coin Calculation ---
+    let baseXP = score >= 80 ? 30 : score >= 50 ? 20 : 10;
+    let bonusXP = 0;
+    let coinsEarned = score >= 90 ? 15 : score >= 70 ? 10 : 5;
+    let leveledUp = false;
+
+    // --- Pet Bonus ---
+    if (user.equippedPet) {
+      const petItem = await StoreItem.findOne({
+        name: user.equippedPet,
+        type: "pet",
+      });
+
+      if (petItem?.bonusPercent) {
+        bonusXP = Math.floor(baseXP * (petItem.bonusPercent / 100));
+      }
+    }
+
+    const totalXP = baseXP + bonusXP;
+
+    const prevLevel = user.level;
+    user.xp += totalXP;
+    user.level = Math.floor(0.1 * Math.sqrt(user.xp)) + 1;
+    leveledUp = user.level > prevLevel;
+
+    user.coins = (user.coins || 0) + coinsEarned;
+
+    // --- Save test history ---
+    user.mentalTestHistory.push({
+      date: today,
+      score,
+    });
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Test submitted successfully",
+      score,
+      xpGained: baseXP,
+      bonusXP,
+      coinsEarned,
+      totalXP,
+      newCoins: user.coins,
+      leveledUp,
+      newLevel: user.level,
+    });
+  } catch (err) {
+    console.error("Error in /submit-test:", err);
+    return res.status(500).json({ error: "Failed to submit test" });
+  }
+});
+
 
 router.get('/leaderboard',async function(req,res){
     try{

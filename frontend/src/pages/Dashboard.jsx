@@ -71,11 +71,15 @@ const Dashboard = () => {
       <div className="dashboard-header">
         <div className="avatar-section">
           <img
-            src={`/${user.avatar || "default.png"}`}
-            onError={(e) => (e.target.style.display = "none")}
+            src={`/assets/avatars/${slugify(user?.avatar || "default")}.png`}
+            onError={(e) => {
+              e.target.onerror = null; // Prevent infinite loop
+              e.target.src = "/default.png"; // Fallback to public/default.png
+            }}
+            alt="User Avatar"
             className="avatar"
-            alt="avatar"
           />
+
           <div>
             <h2>Welcome back, {user.username} 👋</h2>
             <p>
@@ -130,16 +134,20 @@ const Dashboard = () => {
       <div className="section">
         <h3>🎯 Quick Actions</h3>
         <div className="quick-links">
-          <Link to="/journal" className="card">📔 New Journal</Link>
-          <Link to="/today-entry" className="card">🗓️ Today’s Entry</Link>
-          <Link to="/journal-stats" className="card">📈 Entry Stats</Link>
-          <Link to="/entries" className="card">🧾 All Entries</Link>
-          <Link to="/my-challenges" className="card">🔥 My Challenge</Link>
-          <Link to="/challenges" className="card">🌟 Join Challenge</Link>
-          <Link to="/leaderboard" className="card">🏆 Leaderboard</Link>
-          <Link to="/store" className="card">🛍️ Store</Link>
-          <Link to="/friends" className="card">🫂 Friends</Link>
-          <Link to="/tranquil_zone" className="card">🧘‍♂️Tranquil Zone</Link>
+<div className="quick-links">
+  <Link to="/journal" className="card">📔 New Journal</Link>
+  <Link to="/today-entry" className="card">🗓️ Today’s Entry</Link>
+  <Link to="/journal-stats" className="card">📈 Entry Stats</Link>
+  <Link to="/entries" className="card">🧾 All Entries</Link>
+  <Link to="/my-challenges" className="card">🔥 My Challenge</Link>
+  <Link to="/challenges" className="card">🌟 Join Challenge</Link>
+  <Link to="/mental-health-test" className="card">🧠 Mental Health Test</Link>
+  <Link to="/leaderboard" className="card">🏆 Leaderboard</Link>
+  <Link to="/store" className="card">🛍️ Store</Link>
+  <Link to="/friends" className="card">🫂 Friends</Link>
+  <Link to="/tranquil_zone" className="card">🧘‍♂️ Tranquil Zone</Link>
+</div>
+
         </div>
       </div>
 
