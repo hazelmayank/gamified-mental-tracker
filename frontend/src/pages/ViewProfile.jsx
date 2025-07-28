@@ -24,7 +24,7 @@ export default function ViewProfile() {
   const friendId = queryParams.get('id');
   const [friend, setFriend] = useState(null);
   const [loading, setLoading] = useState(true);
-
+//Done
   useEffect(() => {
     axios
       .get(`/friends/${friendId}`)
