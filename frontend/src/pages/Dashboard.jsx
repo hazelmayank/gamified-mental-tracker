@@ -133,7 +133,7 @@ const Dashboard = () => {
 
       <div className="section">
         <h3>🎯 Quick Actions</h3>
-        <div className="quick-links">
+        
 <div className="quick-links">
   <Link to="/journal" className="card">📔 New Journal</Link>
   <Link to="/today-entry" className="card">🗓️ Today’s Entry</Link>
@@ -146,7 +146,7 @@ const Dashboard = () => {
   <Link to="/store" className="card">🛍️ Store</Link>
   <Link to="/friends" className="card">🫂 Friends</Link>
   <Link to="/tranquil_zone" className="card">🧘‍♂️ Tranquil Zone</Link>
-</div>
+
 
         </div>
       </div>
